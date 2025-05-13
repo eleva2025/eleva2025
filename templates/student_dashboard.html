@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eleva - Painel do Aluno</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-primary: #e6f1ff;
+            --text-secondary: #b5b5bd;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+            box-shadow: var(--box-shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        nav a i {
+            font-size: 1.1rem;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 1.8rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .card-title i {
+            font-size: 1.3rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background-color: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .message-list, .content-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .message-item, .content-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .message-item:hover, .content-item:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: translateX(5px);
+        }
+
+        .message-subject, .content-discipline {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .message-subject i {
+            color: var(--accent-color);
+        }
+
+        .message-content, .content-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .message-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .grade-value {
+            font-weight: 600;
+        }
+
+        .grade-excellent {
+            color: var(--success-color);
+        }
+
+        .grade-good {
+            color: #8bc34a;
+        }
+
+        .grade-regular {
+            color: var(--warning-color);
+        }
+
+        .grade-bad {
+            color: var(--danger-color);
+        }
+
+        .frequency-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .frequency-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                flex-wrap: wrap;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            th, td {
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            nav a {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .card {
+                padding: 1.2rem;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .message-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Painel do Aluno</span>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+            <a href="#grades">
+                <i class="fas fa-chart-line"></i>
+                Notas
+            </a>
+            <a href="#messages">
+                <i class="fas fa-envelope"></i>
+                Mensagens
+            </a>
+            <a href="#contents">
+                <i class="fas fa-book"></i>
+                Conteúdos
+            </a>
+            <a href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i>
+                Sair
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Notas e Frequência -->
+        <div class="card" id="grades">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-chart-line"></i>
+                    Notas e Frequência
+                </h2>
+                <div class="card-actions">
+                    <span class="badge">!</span>
+                </div>
+            </div>
+            
+            {% if grades %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>Nota</th>
+                            <th>Frequência</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for grade in grades %}
+                            <tr>
+                                <td>{{ grade.name }}</td>
+                                <td>
+                                    <span class="grade-value 
+                                        {% if grade.grade >= 8 %}grade-excellent
+                                        {% elif grade.grade >= 6 %}grade-good
+                                        {% elif grade.grade >= 4 %}grade-regular
+                                        {% else %}grade-bad
+                                        {% endif %}">
+                                        {{ grade.grade }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ grade.frequency }}%
+                                    <div class="frequency-bar">
+                                        <div class="frequency-progress" data-frequency="{{ grade.frequency }}"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>Nenhuma nota ou frequência disponível no momento</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Mensagens Recebidas -->
+        <div class="card" id="messages">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-envelope"></i>
+                    Mensagens Recebidas
+                </h2>
+                <div class="card-actions">
+                    <span class="badge">{{ messages|length if messages else 0 }}</span>
+                </div>
+            </div>
+            
+            {% if messages %}
+                <div class="message-list">
+                    {% for message in messages %}
+                        <div class="message-item">
+                            <div class="message-subject">
+                                <i class="fas fa-envelope-open-text"></i>
+                                {{ message.assunto }}
+                            </div>
+                            <div class="message-content">
+                                {{ message.mensagem }}
+                            </div>
+                            <div class="message-meta">
+                                <span>Data: {{ message.date }}</span>
+                                <span>Professor: {{ message.teacher }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Nenhuma mensagem recebida</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Conteúdo das Disciplinas -->
+        <div class="card" id="contents">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-book"></i>
+                    Conteúdo das Disciplinas
+                </h2>
+                <div class="card-actions">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+            </div>
+            
+            {% if contents %}
+                <div class="content-list">
+                    {% for content in contents %}
+                        <div class="content-item">
+                            <div class="content-discipline">
+                                <i class="fas fa-bookmark"></i>
+                                {{ content.discipline_name }}
+                            </div>
+                            <div class="content-text">
+                                {{ content.content }}
+                            </div>
+                            <div class="message-meta">
+                                <span>Atualizado em: {{ content.date }}</span>
+                                <span>Professor: {{ content.teacher }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-book-open"></i>
+                    <p>Nenhum conteúdo disponível no momento</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Efeito de scroll suave para navegação
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Adiciona classe ativa ao link de navegação correspondente à seção visível
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.card');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eleva - Painel do Professor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-primary: #e6f1ff;
+            --text-secondary: #b5b5bd;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ... (mantenha todos os estilos CSS anteriores) ... */
+
+        /* Novos estilos para upload de arquivos */
+        .file-upload-container {
+            margin-top: 1.5rem;
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent-color);
+            background: rgba(76, 201, 240, 0.05);
+        }
+
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .file-upload-label i {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+
+        .file-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            max-width: 100%;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+        }
+
+        .file-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .file-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .file-size {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Ícones específicos por tipo de arquivo */
+        .pdf-icon { color: #e74c3c; }
+        .word-icon { color: #2b579a; }
+        .excel-icon { color: #217346; }
+        .image-icon { color: #e67e22; }
+        .generic-icon { color: var(--accent-color); }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .close-modal {
+            color: var(--text-secondary);
+            float: right;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Painel do Professor</span>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <span>{{ current_user.username }}</span>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+            <a href="#disciplines">
+                <i class="fas fa-book"></i>
+                Disciplinas
+            </a>
+            <a href="#contents">
+                <i class="fas fa-file-alt"></i>
+                Conteúdos
+            </a>
+            <a href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt"></i>
+                Sair
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-message">
+            <i class="fas fa-handshake"></i>
+            <div>
+                <h2>Bem-vindo, Professor {{ current_user.username }}!</h2>
+                <p>Acompanhe suas disciplinas e conteúdos aqui</p>
+            </div>
+        </div>
+
+        <!-- Disciplinas Atribuídas -->
+        <div class="card" id="disciplines">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-book-open"></i>
+                    Disciplinas Atribuídas
+                </h2>
+                <div class="card-actions">
+                    <span class="badge">{{ disciplines|length }}</span>
+                </div>
+            </div>
+            
+            {% if disciplines %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome da Disciplina</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for discipline in disciplines %}
+                            <tr>
+                                <td>{{ discipline.id }}</td>
+                                <td>{{ discipline.name }}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary btn-add-content" data-discipline-id="{{ discipline.id }}">
+                                            <i class="fas fa-plus-circle"></i> Conteúdo
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-book"></i>
+                    <p>Nenhuma disciplina atribuída no momento</p>
+                    <p>Entre em contato com a administração se acredita que isto é um erro.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Conteúdo Adicionado -->
+        <div class="card" id="contents">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-file-alt"></i>
+                    Conteúdo Adicionado
+                </h2>
+                <div class="card-actions">
+                    <span class="badge">{{ contents|length }}</span>
+                </div>
+            </div>
+            
+            {% if contents %}
+                <div class="content-list">
+                    {% for content in contents %}
+                        <div class="content-item">
+                            <div class="content-discipline">
+                                <i class="fas fa-bookmark"></i>
+                                {{ content.discipline_name }}
+                            </div>
+                            <div class="content-text">
+                                {{ content.content }}
+                            </div>
+                            
+                            <!-- Seção de arquivos anexados -->
+                            {% if content.files %}
+                                <div class="file-upload-container">
+                                    <h4 style="margin-bottom: 0.5rem; color: var(--accent-color);">
+                                        <i class="fas fa-paperclip"></i> Anexos
+                                    </h4>
+                                    <div class="file-preview">
+                                        {% for file in content.files %}
+                                            <div class="file-item">
+                                                {% if file.type == 'pdf' %}
+                                                    <i class="fas fa-file-pdf pdf-icon file-icon"></i>
+                                                {% elif file.type in ['doc', 'docx'] %}
+                                                    <i class="fas fa-file-word word-icon file-icon"></i>
+                                                {% elif file.type in ['xls', 'xlsx'] %}
+                                                    <i class="fas fa-file-excel excel-icon file-icon"></i>
+                                                {% elif file.type in ['jpg', 'jpeg', 'png', 'gif'] %}
+                                                    <i class="fas fa-file-image image-icon file-icon"></i>
+                                                {% else %}
+                                                    <i class="fas fa-file generic-icon file-icon"></i>
+                                                {% endif %}
+                                                
+                                                <div class="file-info">
+                                                    <span class="file-name">{{ file.name }}</span>
+                                                    <span class="file-size">{{ (file.size / 1024).toFixed(2) }} KB</span>
+                                                </div>
+                                                
+                                                <a href="{{ url_for('download_file', file_id=file.id) }}" class="btn btn-sm" style="margin-left: 0.5rem;">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="content-meta">
+                                <span>Adicionado em: {{ content.date }}</span>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary btn-sm btn-edit-content" data-content-id="{{ content.id }}">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <form action="{{ url_for('delete_content_route', content_id=content.id) }}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja remover este conteúdo?')">
+                                            <i class="fas fa-trash-alt"></i> Remover
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-file-alt"></i>
+                    <p>Nenhum conteúdo adicionado ainda</p>
+                    <button class="btn btn-primary btn-add-content" data-discipline-id="{{ disciplines[0].id if disciplines else '' }}">
+                        <i class="fas fa-plus-circle"></i> Adicionar Conteúdo
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar/Editar Conteúdo -->
+    <div id="contentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modalTitle"><i class="fas fa-plus-circle"></i> Adicionar Conteúdo</h2>
+            
+            <form id="contentForm" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="contentId" name="content_id">
+                <input type="hidden" id="disciplineId" name="discipline_id">
+                
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="contentText" style="display: block; margin-bottom: 0.5rem;">
+                        <i class="fas fa-align-left"></i> Descrição do Conteúdo
+                    </label>
+                    <textarea name="content" id="contentText" rows="5" style="width: 100%; padding: 0.8rem; border-radius: var(--border-radius); background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary);" required></textarea>
+                </div>
+                
+                <div class="file-upload-container">
+                    <label style="display: block; margin-bottom: 0.5rem;">
+                        <i class="fas fa-paperclip"></i> Anexos (Opcional)
+                    </label>
+                    
+                    <div class="file-upload" id="fileUploadArea">
+                        <label class="file-upload-label" for="fileInput">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Arraste arquivos aqui ou clique para selecionar</span>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">Formatos: PDF, DOC, XLS, JPG, PNG (Máx. 10MB cada)</span>
+                        </label>
+                        <input type="file" name="files" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" style="display: none;">
+                    </div>
+                    
+                    <div id="fileList" class="file-preview"></div>
+                </div>
+                
+                <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 0.8rem;">
+                    <button type="button" class="btn btn-danger close-modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Navegação e scroll suave (mantido do original)
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                        history.pushState(null, null, targetId);
+                    }
+                }
+            });
+        });
+
+        // Ativação dos links de navegação (mantido do original)
+        window.addEventListener('scroll', updateActiveNavLink);
+        document.addEventListener('DOMContentLoaded', updateActiveNavLink);
+        
+        function updateActiveNavLink() {
+            const sections = document.querySelectorAll('.card');
+            const navLinks = document.querySelectorAll('nav a');
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 120;
+                if (window.scrollY >= sectionTop) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Modal e Upload de Arquivos
+        const modal = document.getElementById('contentModal');
+        const contentForm = document.getElementById('contentForm');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        
+        // Abrir modal para adicionar conteúdo
+        document.querySelectorAll('.btn-add-content').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const disciplineId = this.getAttribute('data-discipline-id');
+                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar Conteúdo';
+                document.getElementById('disciplineId').value = disciplineId;
+                document.getElementById('contentId').value = '';
+                document.getElementById('contentText').value = '';
+                fileList.innerHTML = '';
+                modal.style.display = 'block';
+            });
+        });
+        
+        // Abrir modal para editar conteúdo
+        document.querySelectorAll('.btn-edit-content').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const contentId = this.getAttribute('data-content-id');
+                // Aqui você deve fazer uma requisição AJAX para buscar os dados do conteúdo
+                // Exemplo simplificado:
+                fetch(`/get_content/${contentId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Editar Conteúdo';
+                        document.getElementById('contentId').value = data.id;
+                        document.getElementById('disciplineId').value = data.discipline_id;
+                        document.getElementById('contentText').value = data.content;
+                        
+                        // Limpar e adicionar pré-visualização de arquivos existentes
+                        fileList.innerHTML = '';
+                        if (data.files && data.files.length > 0) {
+                            data.files.forEach(file => {
+                                addFilePreview(file.name, file.size, file.type);
+                            });
+                        }
+                        
+                        modal.style.display = 'block';
+                    });
+            });
+        });
+        
+        // Fechar modal
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+        });
+        
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // Manipulação de arquivos
+        fileInput.addEventListener('change', handleFiles);
+        
+        // Drag and drop
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.style.borderColor = 'var(--accent-color)';
+            fileUploadArea.style.backgroundColor = 'rgba(76, 201, 240, 0.1)';
+        });
+        
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            fileUploadArea.style.backgroundColor = 'transparent';
+        });
+        
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            fileUploadArea.style.backgroundColor = 'transparent';
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFiles();
+            }
+        });
+        
+        function handleFiles() {
+            fileList.innerHTML = '';
+            
+            if (fileInput.files.length > 0) {
+                Array.from(fileInput.files).forEach(file => {
+                    addFilePreview(file.name, file.size, getFileType(file.name));
+                });
+            }
+        }
+        
+        function addFilePreview(name, size, type) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            
+            let iconClass = 'fas fa-file generic-icon';
+            if (type === 'pdf') iconClass = 'fas fa-file-pdf pdf-icon';
+            else if (type === 'doc' || type === 'docx') iconClass = 'fas fa-file-word word-icon';
+            else if (type === 'xls' || type === 'xlsx') iconClass = 'fas fa-file-excel excel-icon';
+            else if (type === 'jpg' || type === 'jpeg' || type === 'png' || type === 'gif') iconClass = 'fas fa-file-image image-icon';
+            
+            fileItem.innerHTML = `
+                <i class="${iconClass} file-icon"></i>
+                <div class="file-info">
+                    <span class="file-name">${name}</span>
+                    <span class="file-size">${(size / 1024).toFixed(2)} KB</span>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm btn-remove-file">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            fileList.appendChild(fileItem);
+        }
+        
+        function getFileType(filename) {
+            return filename.split('.').pop().toLowerCase();
+        }
+        
+        // Remover arquivo da pré-visualização
+        fileList.addEventListener('click', function(e) {
+            if (e.target.closest('.btn-remove-file')) {
+                const fileItem = e.target.closest('.file-item');
+                fileItem.remove();
+                
+                // Atualizar a lista de arquivos no input
+                const dt = new DataTransfer();
+                const fileInput = document.getElementById('fileInput');
+                const remainingFiles = Array.from(fileList.querySelectorAll('.file-item'))
+                    .map(item => item.querySelector('.file-name').textContent);
+                
+                Array.from(fileInput.files).forEach(file => {
+                    if (remainingFiles.includes(file.name)) {
+                        dt.items.add(file);
+                    }
+                });
+                
+                fileInput.files = dt.files;
+            }
+        });
+        
+        // Enviar formulário
+        contentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const contentId = document.getElementById('contentId').value;
+            const url = contentId ? `/update_content/${contentId}` : '/add_content';
+            
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Erro ao salvar conteúdo');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Erro ao enviar formulário');
+            });
+        });
+    </script>
+</body>
+</html>

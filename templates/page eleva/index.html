@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eleva - Programa de Liderança | Gentil Negócios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='page eleva/css/styles.css') }}">
+</head>
+<body>
+    <!-- BARRA DE NAVEGAÇÃO SUPERIOR -->
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">
+            <img src="{{ url_for('static', filename='page eleva/assets/images/LOGO ELEVA 2025.png') }}" alt="Logo Eleva" class="logo">
+        </a>
+
+            <!-- Botão do menu hamburguer -->
+        <button class="hamburger" aria-label="Menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#beneficios" class="nav-link">Benefícios</a>
+            <a href="#metodologia" class="nav-link">Metodologia</a>
+            <a href="#recomendaçao" class="nav-link">Depoimentos</a>
+            <a href="#nosso-time" class="nav-link">Nosso time</a>
+            <a href="#contato" class="nav-link">Venha ser um Líder Elevado</a>
+            <a href="/login" class="nav-link btn-destaque">Entrar</a>
+        </div>
+    </nav>
+    
+    <!-- Hero com vídeo -->
+    <section id="home" class="hero">
+        <div class="hero-text">
+            <h1>Programa Eleva de Liderança</h1>
+            <p class="destaque">Desenvolvendo líderes transformadores na Gentil Negócios</p>
+            <p>Trabalhamos com o propósito de inspirar pessoas que o trabalho e o empreendedorismo geram prosperidade e transformam realidades, e acreditamos que um fator importante para esse propósito é o encarreiramento dos nossos colaboradores.</p>
+            <button class="cta-button" onclick="window.location.href='https://gentilnegocios.vagas.solides.com.br/vaga/600780'">
+                Quero participar
+              </button>
+        </div>
+        <div class="hero-image">
+            <video autoplay muted loop playsinline>
+                <source src="{{ url_for('static', filename='page eleva/assets/videos/Gentil - Formatura2.mp4') }}" type="video/mp4">
+                Seu navegador não suporta vídeo HTML5.
+            </video>
+        </div>
+    </section>
+
+    <!-- Seção preta de transformação -->
+    <section id="beneficios" class="black-section">
+        <div class="container">
+            <h2>Propósito e Missão</h2>
+
+            <h3>Propósito do Programa:</h3>
+            <em>
+                <p>O propósito de nosso programa é desenvolver talentos internos, fomentar a cultura de encarreiramento profissional e efetivar o propósito da Gentil, que consiste em transformar realidades e gerar prosperidade aos participantes, preparando-os para assumir cargos de gestão.</p>
+            </em>
+            
+            <div style="margin-bottom: 30px;"></div> <!-- Espaçamento adicional -->
+            
+            <h3>Missão do ELEVA:</h3>
+            <em>
+                <p>A missão do ELEVA é formar uma equipe de sucessores comprometidos com a liderança, inspirando pessoas por meio do trabalho e do empreendedorismo, empoderando o conhecimento e transformando o ecossistema Gentil.</p>
+            </em>
+        </div>
+    </section>
+
+    <!-- Seção de Benefíios -->
+    <section class="benefits-section">
+        <div class="benefits-container">
+            <h2>Benefícios Exclusivos</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>Networking estratégico <i class="fas fa-network-wired"></i></h3>
+                    <p>Conexões com líderes e empreendedores de alto impacto para troca de experiências e parcerias estratégicas dentro da Gentil Negócios.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <h3>Mentorias individuais <i class="fas fa-user-tie"></i></h3>
+                    <p>Sessões personalizadas com especialistas para acelerar seu desenvolvimento profissional e solucionar desafios específicos.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <h3>Certificação reconhecida <i class="fas fa-award"></i></h3>
+                    <p>Certificado que comprova suas novas competências em liderança e gestão de equipes.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <h3>Material exclusivo <i class="fas fa-book-open"></i></h3>
+                    <p>Acesso vitalício a ferramentas, templates editáveis e conteúdos atualizados mesmo após o término do programa.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <h3>Comunidade ativa <i class="fas fa-users"></i></h3>
+                    <p>Grupo exclusivo para continuidade do aprendizado, networking e suporte entre os participantes de todas as turmas.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <h3>Projeção de carreira <i class="fas fa-chart-line"></i></h3>
+                    <p>Visibilidade dentro da Gentil Negócios e acesso prioritário a oportunidades de crescimento e promoções.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quadros expansíveis - Metodologia -->
+    <section id="metodologia" class="info-section">
+        <h2 class="section-title">Nossa Metodologia</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Liderança Humanizada <i class="fas fa-plus"></i></h3>
+                <div class="card-content">
+                    <p>Desenvolvimento de competências emocionais e comunicação não-violenta para gestão de equipes de alta performance. Trabalhamos autoconhecimento, inteligência emocional e técnicas de feedback eficaz.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/lider (1).jpg') }}" alt="Liderança Humanizada">
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>Gestão Estratégica <i class="fas fa-plus"></i></h3>
+                <div class="card-content">
+                    <p>Ferramentas práticas para tomada de decisão, planejamento e execução de projetos com excelência. Inclui OKRs, análise SWOT, matriz GUT e outras metodologias aplicáveis imediatamente.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/lider (2).jpg') }}" alt="Gestão Estratégica">
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>Inovação Aplicada <i class="fas fa-plus"></i></h3>
+                <div class="card-content">
+                    <p>Metodologias ágeis e design thinking para resolver problemas complexos e identificar oportunidades. Workshops práticos para desenvolver mentalidade inovadora e capacidade de adaptação.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/lider (3).jpg') }}" alt="Inovação Aplicada">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos - Carrossel -->
+    <section id="recomendaçao" class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title" style="color: var(--azul);">Quem Já Participou Recomenda</h2>
+            
+            <div class="testimonial-carousel glide">
+                <div class="glide__track" data-glide-el="track">
+                    <div class="glide__slides">
+                        <div class="glide__slide">
+                            <div class="testimonial-card">
+                                <img src="{{ url_for('static', filename='page eleva/assets/images/Glaucia.jpeg') }}" alt="Participante" class="testimonial-image">
+                                <div class="testimonial-content">
+                                    <p>"Participar do Programa Eleva me permitiu experimentar novos horizontes. A partir das provocações feitas em aula, consegui aguçar ainda mais minha vontade de aprender, de me colocar no lugar do outro, bem como me aprofundar em setores da empresa que eu não tinha proximidade. Foi um capítulo importante na minha carreira como gestora de negócios e pessoas. O conhecimento, o networking feito...os temas abordados. O Eleva é uma grande oportunidade de evolução pessoal e profissional!"</p>
+                                    <h4>Glaucia Góis, Aluna do Eleva.</h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glide__slide">
+                            <div class="testimonial-card">
+                                <img src="{{ url_for('static', filename='page eleva/assets/images/Geovan.jpeg') }}" alt="Participante" class="testimonial-image">
+                                <div class="testimonial-content">
+                                    <p>"O programa Eleva foi uma jornada transformadora na minha carreira. Durante meses de desafios e aprendizados, desenvolvi uma visão mais estratégica, fortaleci minhas habilidades de liderança e saí da zona de conforto. Para a turma de 2025, meu conselho é: aproveitem cada etapa com dedicação, pois o Eleva não é apenas um programa, mas uma oportunidade única de crescimento profissional e pessoal."</p>
+                                    <h4>Geovan Silva, Aluno do Eleva.</h4>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="glide__slide">
+                            <div class="testimonial-card">
+                                <img src="{{ url_for('static', filename='page eleva/assets/images/erika.jpg') }}" alt="Participante" class="testimonial-image">
+                                <div class="testimonial-content">
+                                    <p>"O Programa Eleva foi um divisor de águas na minha vida profissional. Através dele, tive a oportunidade de aprender sobre gestão, liderança e ampliar minha visão de forma prática, alinhando-me cada vez mais aos valores da GN. Graças a essa experiência, fui promovida a GVO. Cada aula foi de extrema importância para o meu desenvolvimento, contribuindo significativamente para o aprimoramento das competências essenciais para ser um bom líder."</p>
+                                    <h4>Erika, Aluna do Eleva.</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navegação -->
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><i class="fas fa-chevron-left"></i></button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                
+                <!-- Bullets (pontos de navegação) -->
+                <div class="glide__bullets" data-glide-el="controls[nav]">
+                    <button class="glide__bullet" data-glide-dir="=0"></button>
+                    <button class="glide__bullet" data-glide-dir="=1"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nosso Time -->
+    <section id="nosso-time" class="black-section">
+        <div class="container">
+            <h2 class="section-title">Nosso Time</h2>
+            <div class="team-grid">
+
+                <!-- Membro 1 -->
+                <div class="team-member">
+                    <div class="member-photo" style="background-image: url('/static/page eleva/assets/images/Janaína.jpg');"></div>
+                    <div class="member-info">
+                        <h3 class="member-name">Janaína Reis</h3>
+                        <p class="member-position">Gente & Cultura</p>
+                        <p class="member-bio">Janaína Reis acredita que liderar pessoas é um dos caminhos mais potentes para gerar resultados sustentáveis nos negócios. Diretora de Gente e Cultura, é movida pelo propósito de desenvolver ambientes onde as pessoas possam crescer, se conectar com o que fazem e entregar o seu melhor. Com uma atuação estratégica, apaixonada pelo desenvolvimento humano e focada em resultados, Janaína lidera iniciativas que fortalecem a cultura organizacional, impulsionam a performance dos times e tornam a empresa cada vez mais preparada para os desafios do presente e do futuro.
+                        </p>
+                    </div>
+                </div>
+                <!-- Membro 2 -->
+                <div class="team-member">
+                    <div class="member-photo" style="background-image: url('/static/page eleva/assets/images/Pedro.jpg');"></div>
+                    <div class="member-info">
+                        <h3 class="member-name">Pedro Demetrius</h3>
+                        <p class="member-position">Aprendizagem e Desenvolvimento</p>
+                        <p class="member-bio">Pedro vê o Desenvolvimento Humano como um espaço vivo de transformação — onde gente cresce, se conecta e ganha clareza sobre o impacto que pode gerar. No dia a dia, seu papel em Aprendizagem e Desenvolvimento é criar experiências que façam sentido de verdade: que preparem líderes não só para entregar resultados, mas para escutar, adaptar, inspirar. Acredita que projetos de formação - Como o Eleva - precisam conversar com os desafios reais da empresa e, ao mesmo tempo, manter viva a chama da criatividade e inovação. Porque no fim das contas, formar líderes é também cuidar da cultura, da estratégia e das pessoas que sustentam tudo isso.</p>
+                    </div>
+                </div>
+                
+                <!-- Membro 3 -->
+                <div class="team-member">
+                    <div class="member-photo" style="background-image: url('/static/page eleva/assets/images/maria.jpg');"></div>
+                    <div class="member-info">
+                        <h3 class="member-name">Maria Luiza</h3>
+                        <p class="member-position">Aprendizagem e Desenvolvimento</p>
+                        <p class="member-bio">Malu acredita que a educação corporativa é uma poderosa alavanca de transformação para as pessoas e para os negócios. Como Analista de Aprendizagem e Desenvolvimento, seu papel é impulsionar o crescimento de líderes através de projetos educacionais inovadores, estratégicos e alinhados aos desafios do presente e do futuro. Com iniciativas como a Academia de Líderes, Malu contribui diretamente para o fortalecimento da cultura organizacional, promovendo uma liderança mais preparada, humana e conectada com os objetivos da empresa.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção final CTA -->
+    <section id="contato" class="black-section">
+        <div class="container">
+            <h2>Pronto para Elevar Sua Liderança?</h2>
+            <p>Vagas limitadas para a próxima turma. Inscreva-se agora mesmo e dê o primeiro passo na transformação da sua carreira.</p>
+            <button onclick="window.location.href='https://gentilnegocios.vagas.solides.com.br/vaga/600780'" class="cta-button" style="background: var(--verde); color: var(--preto); margin-top: 30px; cursor: pointer;">
+                Garantir Minha Vaga
+              </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo-image-gentil-container">
+                <div class="footer-logo-gentil">
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/logo-gentil-negocios.png') }}" alt="Gentil Negócios" class="logo-image-gentil">
+                </div>
+            </div>
+        
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Benefícios</a>
+                <a href="#">Metodologia</a>
+                <a href="#">Depoimentos</a>
+                <a href="#">Nosso time</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://www.linkedin.com/company/gentilnegócios" target="_blank" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://www.instagram.com/gentilnegocios" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com/gentilnegocios" target="_blank" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            <div class="copyright">
+                © 2025 Eleva - Gentil Negócios. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tela Flutuante de Etapas -->
+    <div class="etapas-flutuante">
+        <div class="etapas-container">
+            <button class="fechar-etapas">&times;</button>
+            <h3>Etapas do Programa</h3>
+            <div class="etapas-navegacao">
+                <button class="etapa-btn active" data-etapa="1">1. Inscrição</button>
+                <button class="etapa-btn" data-etapa="2">2. Seleção</button>
+                <button class="etapa-btn" data-etapa="3">3. Imersão</button>
+                <button class="etapa-btn" data-etapa="4">4. Mentoria</button>
+                <button class="etapa-btn" data-etapa="5">5. Formatura</button>
+            </div>
+            <div class="etapas-conteudo">
+                <div class="etapa-conteudo active" data-etapa="1">
+                    <h4>Etapa 1: Inscrição</h4>
+                    <p>Preencha o formulário com seus dados e motivação para participar do programa. Esta etapa está aberta por tempo limitado.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/inscrição.jpg') }}" alt="Inscrição">
+                </div>
+                <div class="etapa-conteudo" data-etapa="2">
+                    <h4>Etapa 2: Seleção</h4>
+                    <p>Análise de perfil e entrevistas com nosso time de especialistas. Avaliamos potencial de liderança e alinhamento cultural.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/lider (3).jpg') }}" alt="Seleção">
+                </div>
+                <div class="etapa-conteudo" data-etapa="3">
+                    <h4>Etapa 3: Imersão</h4>
+                    <p>Workshops intensivos com os principais líderes da empresa. Desenvolvimento de habilidades técnicas e comportamentais.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/lider (2).jpg') }}" alt="Imersão">
+                </div>
+                <div class="etapa-conteudo" data-etapa="4">
+                    <h4>Etapa 4: Mentoria</h4>
+                    <p>Acompanhamento personalizado com um profissional referência. Aplicação prática dos conhecimentos em projetos reais.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/mentoria.jpeg') }}" alt="Mentoria">
+                </div>
+                <div class="etapa-conteudo" data-etapa="5">
+                    <h4>Etapa 5: Formatura</h4>
+                    <p>Cerimônia de certificação e integração ao banco de talentos. Preparação para assumir posições de liderança.</p>
+                    <img src="{{ url_for('static', filename='page eleva/assets/images/formatura (1).jpeg') }}" alt="Formatura">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão para abrir etapas -->
+    <button class="abrir-etapas-btn">
+        <i class="fas fa-map"></i> Ver Etapas
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+    <script src="{{ url_for('static', filename='page eleva/js/script.js') }}"></script>
+</body>
+</html>
