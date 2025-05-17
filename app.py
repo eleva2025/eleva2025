@@ -4,13 +4,15 @@ import os
 import requests
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+import json
+
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'sua_chave_secreta_aqui')
 
 # Configurações do Xano
 XANO_BASE_URL = os.getenv('XANO_BASE_URL', "https://xidg-u2cu-sa8e.n7c.xano.io/api:loOqZbWF")
-XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.jYnU2vkom5sq-YTiiBHoD1H6GJxRJHM1_phCrfdOxWPnA0VV3cJZK2ekwRsIaNg6HFYHWQ15g0POYi-wxVeWYVR4gvsU5Zkl.9CEvzO2kcooHNZQpcSSnPA.MfOiiK1yjAIECOBuY0AZVEje8fVqbmtdKxfyQMKRQzWCfIU43YCuEb16HyX-MAAO4OMq6JmzuDderz63UlIZ6dascyfXVkz2n2l77zyDbyhVrOp6L00Jk6SK_LkiLJGutjxP40E7hvV18zxmL5VKvw.DdBtOYy00j6usK6K8TOVkwJDEquE8gTGeRfCTbqchWs")
+XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.9eLMcqBq4J0816VMI0fTVGVwHV2B0UkNxyGWTOao5wnC55Ua04MloGbuhDM_CoL4iiSp3M6PP-VCfmED2b0ZmBfWmyNsGDya.KhtMi2NDQVEIIs91I_xrig.ehQACigJ29j1R4wDW_5xtsjRQwFyeglfGkjDZxUiDTcP9xwl994J1KMJm0gXUqIBpNXvfOx5szyG9MY-GlU-Sh-W3xygCAREPVYImX5HXQOx77bm1WNlRZJB83WcnrKdSqk3RQ4HB0Q_ubDVf3hZGQ.O5awBbTqA-Uzq_fpCxWK6igMx0PLOcA7Kcq3eWtyzH0")
 # Estrutura das tabelas no Xano
 XANO_TABLES = {
     'users': 'user_eleva',
@@ -19,7 +21,8 @@ XANO_TABLES = {
     'grades': 'grades_eleva',
     'messages': 'messages_eleva',
     'student_disciplines': 'student_disciplines_eleva',
-    'professor_disciplines': 'professor_disciplines_eleva'
+    'professor_disciplines': 'professor_disciplines_eleva',
+    'respostas_prova':'respostas_prova'
 }
 
 # Configuração do Flask-Login
@@ -221,19 +224,27 @@ def student_dashboard():
         return redirect(url_for('home'))
 
     try:
-        # Obter disciplinas do aluno
-        disciplines = xano_request('GET', 'student_disciplines', 
-                                 params={'student_id': current_user.id})
-        
-        # Obter todas as disciplinas para mapear IDs para nomes
+        # Buscar disciplinas do aluno
+        raw_disciplines = xano_request('GET', 'student_disciplines', params={'student_id': current_user.id}) or []
+
+        # Buscar todas as disciplinas e criar o mapa
         all_disciplines = xano_request('GET', 'disciplines') or []
-        discipline_map = {d['id']: d['name'] for d in all_disciplines}
-        
-        # Obter notas e adicionar o nome da disciplina
-        grades = xano_request('GET', 'grades',
-                            params={'student_id': current_user.id}) or []
-        
-        # Processar as notas para incluir o nome da disciplina
+        discipline_map = {int(d['id']): d['name'] for d in all_disciplines}
+
+        # Criar lista de disciplinas com nome (evita duplicados)
+        discipline_ids = set()
+        disciplines = []
+        for d in raw_disciplines:
+            discipline_id = int(d['discipline_id'])
+            if discipline_id not in discipline_ids:
+                disciplines.append({
+                    'id': discipline_id,
+                    'name': discipline_map.get(discipline_id, 'Desconhecida')
+                })
+                discipline_ids.add(discipline_id)
+
+        # Buscar notas
+        grades = xano_request('GET', 'grades', params={'student_id': current_user.id}) or []
         processed_grades = []
         for grade in grades:
             discipline_name = discipline_map.get(grade.get('discipline_id'), 'Desconhecida')
@@ -242,32 +253,39 @@ def student_dashboard():
                 'grade': grade.get('grade', 0),
                 'frequency': grade.get('frequency', 0)
             })
-        
-        # Obter mensagens
-        messages = xano_request('GET', 'messages',
-                              params={'student_id': current_user.id}) or []
-        
-        # Obter conteúdos das disciplinas do aluno
-        discipline_ids = [d['discipline_id'] for d in disciplines] if disciplines else []
+
+        # Buscar mensagens
+        messages = xano_request('GET', 'messages', params={'student_id': current_user.id}) or []
+
+        # Buscar conteúdos
+        conteudos_ids_adicionados = set()
         contents = []
+
         for discipline_id in discipline_ids:
-            discipline_contents = xano_request('GET', 'contents',
-                                            params={'discipline_id': discipline_id}) or []
-            for content in discipline_contents:
-                content['discipline_name'] = discipline_map.get(discipline_id, 'Desconhecida')
-            contents.extend(discipline_contents)
-        print("DEBUG - Disciplinas:", disciplines)
-        print("DEBUG - Notas brutas:", grades)
-        print("DEBUG - Notas processadas:", processed_grades)
+            disciplina_conteudos = xano_request('GET', 'contents', params={'discipline_id': discipline_id}) or []
+
+            for content in disciplina_conteudos:
+                if content.get("id") in conteudos_ids_adicionados:
+                    continue
+                if content.get("discipline_id") != discipline_id:
+                    continue
+
+                content["discipline_name"] = discipline_map.get(discipline_id, "Desconhecida")
+                contents.append(content)
+                conteudos_ids_adicionados.add(content["id"])
+
         return render_template('student_dashboard.html',
-                            disciplines=disciplines or [],
-                            grades=processed_grades,  # Usar as notas processadas
-                            messages=messages or [],
-                            contents=contents or [])
+                               disciplines=disciplines,
+                               grades=processed_grades,
+                               messages=messages,
+                               contents=contents)
+
     except Exception as e:
         print(f"ERRO no dashboard do aluno: {str(e)}")
         flash('Erro ao carregar dashboard', 'error')
         return redirect(url_for('home'))
+
+
     
 @app.route('/send_message', methods=['POST'])
 @login_required
@@ -413,8 +431,10 @@ def admin_dashboard():
         student_disciplines = xano_request('GET', 'student_disciplines') or []
 
         # Criar mapeamentos para relacionamentos
+        all_disciplines = xano_request('GET', 'disciplines') or []
         user_map = {u['id']: u['username'] for u in users}
-        discipline_map = {d['id']: d['name'] for d in disciplines}
+        discipline_map = {int(d['id']): d['name'] for d in all_disciplines}
+
         professor_discipline_map = {(pd['professor_id'], pd['discipline_id']): pd for pd in professor_disciplines}
 
         # Processar histórico completo
@@ -646,6 +666,50 @@ def admin_dashboard():
         print(f"ERRO no painel admin: {str(e)}")
         flash('Erro no painel de administração', 'error')
         return redirect(url_for('home'))
+    
+
+@app.route('/prova/<int:disciplina_id>', methods=['GET', 'POST'])
+@login_required
+def prova(disciplina_id):
+    print("⚡ Método recebido:", request.method)
+    aluno_nome = current_user.username
+
+    # 🚀 Submissão da prova
+    if request.method == 'POST':
+        respostas = {
+            'q1': request.form.get('q1'),
+            'q2': request.form.get('q2'),
+            'q3': request.form.get('q3'),
+            'q4': request.form.get('q4'),
+            'q5': request.form.get('q5'),
+            'q6': request.form.get('q6'),
+            'q7': request.form.get('q7'),
+        }
+
+        # Serializa para texto JSON
+        respostas_json_str = json.dumps(respostas, ensure_ascii=False)
+
+        payload = {
+            'aluno_nome': aluno_nome,
+            'disciplina_id': disciplina_id,
+            'respostas': respostas_json_str,  # ✅ como string para campo do tipo text
+            'created_at': datetime.now().isoformat()
+        }
+
+        print("📤 Enviando payload:", payload)
+
+        try:
+            xano_request('POST', 'respostas_prova', data=payload)
+            flash('Prova enviada com sucesso!', 'success')
+            return redirect(url_for('student_dashboard'))
+        except Exception as e:
+            print(f"Erro ao enviar prova: {str(e)}")
+            flash('Erro ao enviar prova', 'error')
+
+    return render_template('prova.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
+
+
+
     
 @app.route('/update_grade', methods=['POST'])
 @login_required

@@ -315,6 +315,23 @@
                 flex-direction: column;
                 gap: 0.5rem;
             }
+            
+            .btn-prova {
+                display: inline-block;
+                background: var(--accent-color);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: var(--border-radius);
+                text-decoration: none;
+                transition: var(--transition);
+                font-weight: 500;
+            }
+
+            .btn-prova:hover {
+                background: var(--primary-color);
+                transform: scale(1.05);
+            }
+
         }
     </style>
 </head>
@@ -344,6 +361,12 @@
                 <i class="fas fa-book"></i>
                 Conteúdos
             </a>
+            <a href="#disciplinas">
+            <i class="fas fa-layer-group"></i>
+            Disciplinas
+            </a>
+
+
             <a href="{{ url_for('logout') }}">
                 <i class="fas fa-sign-out-alt"></i>
                 Sair
@@ -442,6 +465,50 @@
                 </div>
             {% endif %}
         </div>
+        <!-- Lista de Disciplinas -->
+        <div class="card" id="disciplinas">
+        <div class="card-header">
+            <h2 class="card-title">
+            <i class="fas fa-layer-group"></i>
+            Minhas Disciplinas
+            </h2>
+            <div class="card-actions">
+            <i class="fas fa-list"></i>
+            </div>
+        </div>
+
+        {% if disciplines %}
+            <div class="content-list">
+        {% for d in disciplines %}
+            <div class="content-item">
+            <div class="content-discipline">
+                <i class="fas fa-book-open"></i>
+                {{ d.name }}
+
+                {% if d.prova_respondida %}
+                <span title="Prova respondida">✅</span>
+                {% else %}
+                <a href="{{ url_for('prova', disciplina_id=d.id) }}" class="btn-prova">
+                    📄 Realizar Prova
+                </a>
+                {% endif %}
+            </div>
+
+
+            </div>
+
+            
+        {% endfor %}
+
+            </div>
+        {% else %}
+            <div class="empty-state">
+            <i class="fas fa-layer-group"></i>
+            <p>Nenhuma disciplina encontrada.</p>
+            </div>
+        {% endif %}
+        </div>
+
 
         <!-- Conteúdo das Disciplinas -->
         <div class="card" id="contents">
@@ -455,30 +522,36 @@
                 </div>
             </div>
             
-            {% if contents %}
-                <div class="content-list">
-                    {% for content in contents %}
-                        <div class="content-item">
-                            <div class="content-discipline">
-                                <i class="fas fa-bookmark"></i>
-                                {{ content.discipline_name }}
-                            </div>
-                            <div class="content-text">
-                                {{ content.content }}
-                            </div>
-                            <div class="message-meta">
-                                <span>Atualizado em: {{ content.date }}</span>
-                                <span>Professor: {{ content.teacher }}</span>
-                            </div>
+        {% if contents and contents|length > 0 %}
+            <div class="content-list">
+                {% for content in contents %}
+                    <div class="content-item">
+                        <div class="content-discipline">
+                            <i class="fas fa-bookmark"></i>
+                            {{ content.discipline_name }}
                         </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="empty-state">
-                    <i class="fas fa-book-open"></i>
-                    <p>Nenhum conteúdo disponível no momento</p>
-                </div>
-            {% endif %}
+                        <div class="content-text">
+                            <p><strong>Arquivo:</strong>
+                                <a href="{{ content.content.url }}" target="_blank">
+                                    {{ content.content.name }}
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="message-meta">
+                            <span>Atualizado em: {{ content.date }}</span>
+                            <span>Professor: {{ content.teacher if content.teacher else 'Desconhecido' }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <p>Nenhum conteúdo disponível no momento.</p>
+            </div>
+        {% endif %}
+
         </div>
     </div>
 
