@@ -12,7 +12,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'sua_chave_secreta_aqui')
 
 # Configurações do Xano
 XANO_BASE_URL = os.getenv('XANO_BASE_URL', "https://xidg-u2cu-sa8e.n7c.xano.io/api:loOqZbWF")
-XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.Xje5dPwHqCZnq2yBY9O7Ujqy8wAIzmbp8ZuE6eIVhm2i1jeIj2QhW52C7K7orgki669myLb9Fz19XlUSQCqZDL5p9UDnH-ns.yDtU3_Jx8a4b3KCEmjg8cQ.TTh6pF3xwoVsAQBMUE4U4H0HUHItZ1y8sEEOgzzKTWzj5Xy9akeQaMfW0cuIFmwbAAfDQ2l6X8C49khI-xpy9isJ5lHaXg6tE6iG-L96lHGh45HzoRxwC_6IfZ0-mHjqIu6q0kTKkWMO9rdXDJAMnw.-Y89MHN3TyhsfaJyDPSm20u1OUFf6w27cW2YWaSqfvE")
+XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.8YScmEoyUTFvawjYAQqO0ODVRSpAzJ0OqziK9W8QMjFD08mBDo3ii8jMxCNitEIwtPeFJ3oA7EOvgtY1QwmKQVv1PCJwvvpK.B51FaLfQw9BrLmlyHxKWlQ.gDEelpgnCxa75gi5H4yeFCMgBXuByYETvuqQE6vbrbUNMh30YdyegdW8ft9Vim21j2m_vc4UJM5_qi1DYfixwfLM6_-vix48Ehnm5G3XCTkafWQeOUtUDklkCXXp76b_RfsTkNrsEbepB4U_ua3wJA.7DYCky54_E9SXad0UMJ5cJ4W0tFY3nUuLea034Ufr9E")
 # Estrutura das tabelas no Xano
 XANO_TABLES = {
     'users': 'user_eleva',
