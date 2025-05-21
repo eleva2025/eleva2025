@@ -319,6 +319,7 @@
             .btn-prova {
                 display: block;
                 width: 100%;
+                flex-direction: column
                 background: var(--accent-color);
                 color: white;
                 padding: 0.5rem 1rem;
@@ -513,9 +514,6 @@
             <span title="Prova respondida">✅</span>
         {% else %}
             <div class="provas-disponiveis">
-                <a href="{{ url_for('prova', disciplina_id=d.id) }}" class="btn-prova">
-                    📄 Realizar Prova - Liderança e Cultura
-                </a>
                 <a href="{{ url_for('prova2', disciplina_id=d.id) }}" class="btn-prova">
                     📄 Realizar Prova -  Aula 20/05
                 </a>
