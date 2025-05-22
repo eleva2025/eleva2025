@@ -669,9 +669,9 @@ def admin_dashboard():
         return redirect(url_for('home'))
     
 
-@app.route('/prova/<int:disciplina_id>', methods=['GET', 'POST'])
+@app.route('/prova3/<int:disciplina_id>', methods=['GET', 'POST'])
 @login_required
-def prova(disciplina_id):
+def prova3(disciplina_id):
     print("⚡ Método recebido:", request.method)
     aluno_nome = current_user.username
 
@@ -707,7 +707,7 @@ def prova(disciplina_id):
             print(f"Erro ao enviar prova: {str(e)}")
             flash('Erro ao enviar prova', 'error')
 
-    return render_template('prova.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
+    return render_template('prova3.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
 
 @app.route('/prova2/<int:disciplina_id>', methods=['GET', 'POST'])
 @login_required

@@ -514,6 +514,9 @@
             <span title="Prova respondida">✅</span>
         {% else %}
             <div class="provas-disponiveis">
+                <a href="{{ url_for('prova3', disciplina_id=d.id) }}" class="btn-prova">
+                    📄 Realizar Prova -  Aula 22/05
+                </a>
                 <a href="{{ url_for('prova2', disciplina_id=d.id) }}" class="btn-prova">
                     📄 Realizar Prova -  Aula 20/05
                 </a>
