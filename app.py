@@ -12,7 +12,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'sua_chave_secreta_aqui')
 
 # Configurações do Xano
 XANO_BASE_URL = os.getenv('XANO_BASE_URL', "https://xidg-u2cu-sa8e.n7c.xano.io/api:loOqZbWF")
-XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.P-ZXuhPhBaN_2eahtUqWK2V7UziVUCPc4_VJnEnz2h_55Y2NRk3rYLFWOZe6QzDkQpRyekwgbj6dR8KU7pnKejsCEITxOO69.VBP-ZUIRRxXJETE6LKhdXw.UNTCSWz4H2e3p2wDswFWjLGZaKM5_qM--GKl8vEh8rEGflaiyrztAf_Q-IJPNSn1owq5lB2F-D-ZmtrFilJLp5roBMEul3nEcdT5FhwwyUiTHKAmT-peXKylZkQklDC77cr9yqKLhmWNOOp6TJJeHw.dKwdnzuJa7m7D40HhL-1PuOOrqUgUCT0dJVdSpcU1qQ")
+XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.vfq7cHuYBPZtRFg5Ijog0pCSC8LhPOxX1StkeHnm-9p5s9iw7ZddqewVHYvGyRh_hIYyuNQXFas5zdtLwU6MO6pgThp-rB9r.55txlzwgtN5_xVsw0pQ-dw.uqhCYyn17cT336dM4OMVhBNOt6jTWhDvUNpaMzClJk9jbIlx_X7ufnOa5d-iX6_WCPK6FsHfUxf-02KutUkNZ-6mvdNQire1p4YWxnY_kBC94a6DGUyiuHvYr-cvEg8HQD--1DjcmLMRG-GJCzOEQA.n62pE9zrOGDkgqKbw0tQgunv9sPnxGhwN3X2x2wiHAE")
 # Estrutura das tabelas no Xano
 XANO_TABLES = {
     'users': 'user_eleva',
@@ -23,7 +23,7 @@ XANO_TABLES = {
     'student_disciplines': 'student_disciplines_eleva',
     'professor_disciplines': 'professor_disciplines_eleva',
     'respostas_prova':'respostas_prova',
-    'respostas_prova_2':'respostas_prova_2'
+    'respostas_prova_2':'respostas_prova_2',
 }
 
 # Configuração do Flask-Login
@@ -667,7 +667,47 @@ def admin_dashboard():
         print(f"ERRO no painel admin: {str(e)}")
         flash('Erro no painel de administração', 'error')
         return redirect(url_for('home'))
-    
+
+
+@app.route('/prova/<int:disciplina_id>', methods=['GET', 'POST'])
+@login_required
+def prova(disciplina_id):
+    print("⚡ Método recebido:", request.method)
+    aluno_nome = current_user.username
+
+    # 🚀 Submissão da prova
+    if request.method == 'POST':
+        respostas = {
+            'q1': request.form.get('q1'),
+            'q2': request.form.get('q2'),
+            'q3': request.form.get('q3'),
+            'q4': request.form.get('q4'),
+            'q5': request.form.get('q5'),
+            'q6': request.form.get('q6'),
+            'q7': request.form.get('q7'),
+        }
+
+        # Serializa para texto JSON
+        respostas_json_str = json.dumps(respostas, ensure_ascii=False)
+
+        payload = {
+            'aluno_nome': aluno_nome,
+            'disciplina_id': disciplina_id,
+            'respostas': respostas_json_str,  # ✅ como string para campo do tipo text
+            'created_at': datetime.now().isoformat()
+        }
+
+        print("📤 Enviando payload:", payload)
+
+        try:
+            xano_request('POST', 'respostas_prova_1', data=payload)
+            flash('Prova enviada com sucesso!', 'success')
+            return redirect(url_for('student_dashboard'))
+        except Exception as e:
+            print(f"Erro ao enviar prova: {str(e)}")
+            flash('Erro ao enviar prova', 'error')
+
+    return render_template('prova.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
 
 @app.route('/prova3/<int:disciplina_id>', methods=['GET', 'POST'])
 @login_required
