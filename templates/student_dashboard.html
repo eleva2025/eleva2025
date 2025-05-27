@@ -513,19 +513,18 @@
         {% if d.prova_respondida %}
             <span title="Prova respondida">✅</span>
         {% else %}
+        {% if d.provas %}
             <div class="provas-disponiveis">
-                <a href="{{ url_for('prova', disciplina_id=d.id) }}" class="btn-prova">
-                    📄 Realizar Prova -  Aula 15/05
-                </a>
-
-                <a href="{{ url_for('prova2', disciplina_id=d.id) }}" class="btn-prova">
-                    📄 Realizar Prova -  Aula 20/05
-                </a>
-
-                <a href="{{ url_for('prova3', disciplina_id=d.id) }}" class="btn-prova">
-                    📄 Realizar Prova -  Aula 22/05
-                </a>
+                {% for prova in d.provas %}
+                    <a href="{{ prova.url }}" class="btn-prova">
+                        📄 Realizar Prova - {{ prova.label }}
+                    </a>
+                {% endfor %}
             </div>
+        {% else %}
+            <span>✅ Sem provas disponíveis</span>
+        {% endif %}
+
         {% endif %}
 
 
@@ -545,18 +544,18 @@
         </div>
 
 
-        <!-- Conteúdo das Disciplinas -->
-        <div class="card" id="contents">
-            <div class="card-header">
-                <h2 class="card-title">
-                    <i class="fas fa-book"></i>
-                    Conteúdo das Disciplinas
-                </h2>
-                <div class="card-actions">
-                    <i class="fas fa-sync-alt"></i>
-                </div>
+    <!-- Conteúdo das Disciplinas -->
+    <div class="card" id="contents">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-book"></i>
+                Conteúdo das Disciplinas
+            </h2>
+            <div class="card-actions">
+                <i class="fas fa-sync-alt"></i>
             </div>
-            
+        </div>
+        
         {% if contents and contents|length > 0 %}
             <div class="content-list">
                 {% for content in contents %}
@@ -565,13 +564,22 @@
                             <i class="fas fa-bookmark"></i>
                             {{ content.discipline_name }}
                         </div>
-                        <div class="content-text">
+
+                        {% if content.content and content.content.url %}
                             <p><strong>Arquivo:</strong>
                                 <a href="{{ content.content.url }}" target="_blank">
                                     {{ content.content.name }}
                                 </a>
                             </p>
-                        </div>
+                        {% endif %}
+
+                        {% if content.title %}
+                            <h3>{{ content.title }}</h3>
+                        {% endif %}
+
+                        {% if content.link %}
+                            <a href="{{ content.link }}" target="_blank">Acessar Link</a>
+                        {% endif %}
 
                         <div class="message-meta">
                             <span>Atualizado em: {{ content.date }}</span>
@@ -586,9 +594,8 @@
                 <p>Nenhum conteúdo disponível no momento.</p>
             </div>
         {% endif %}
-
-        </div>
     </div>
+
 
     <script>
         // Efeito de scroll suave para navegação

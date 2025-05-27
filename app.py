@@ -232,17 +232,31 @@ def student_dashboard():
         all_disciplines = xano_request('GET', 'disciplines') or []
         discipline_map = {int(d['id']): d['name'] for d in all_disciplines}
 
-        # Criar lista de disciplinas com nome (evita duplicados)
-        discipline_ids = set()
         disciplines = []
+        discipline_ids = set()
+
         for d in raw_disciplines:
             discipline_id = int(d['discipline_id'])
             if discipline_id not in discipline_ids:
+                # Só adiciona provas se for disciplina 5
+                if discipline_id == 5:
+                    provas = [
+                        {"url": url_for('prova', disciplina_id=discipline_id), "label": "Aula 15/05"},
+                        {"url": url_for('prova2', disciplina_id=discipline_id), "label": "Aula 20/05"},
+                        {"url": url_for('prova3', disciplina_id=discipline_id), "label": "Aula 22/05"},
+                    ]
+                else:
+                    provas = []
+
                 disciplines.append({
                     'id': discipline_id,
-                    'name': discipline_map.get(discipline_id, 'Desconhecida')
+                    'name': discipline_map.get(discipline_id, 'Desconhecida'),
+                    'provas': provas
                 })
                 discipline_ids.add(discipline_id)
+
+
+
 
         # Buscar notas
         grades = xano_request('GET', 'grades', params={'student_id': current_user.id}) or []
@@ -271,9 +285,19 @@ def student_dashboard():
                 if content.get("discipline_id") != discipline_id:
                     continue
 
-                content["discipline_name"] = discipline_map.get(discipline_id, "Desconhecida")
-                contents.append(content)
+                content_dict = {
+                    "id": content.get("id"),
+                    "content": content.get("content"),
+                    "title": content.get("title"),  # ← ✅ adiciona o título
+                    "link": content.get("link"),    # ← ✅ adiciona o link
+                    "discipline_id": content.get("discipline_id"),
+                    "discipline_name": discipline_map.get(discipline_id, "Desconhecida"),
+                    "created_at": content.get("created_at")
+                }
+
+                contents.append(content_dict)
                 conteudos_ids_adicionados.add(content["id"])
+
 
         return render_template('student_dashboard.html',
                                disciplines=disciplines,
