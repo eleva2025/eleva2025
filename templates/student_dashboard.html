@@ -595,6 +595,38 @@
             </div>
         {% endif %}
     </div>
+<div class="card" id="pesquisas-nps">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-poll"></i>
+            Pesquisas NPS Disponíveis
+        </h2>
+    </div>
+
+    {% if aulas_disponiveis %}
+        <div class="content-list">
+            {% for aula in aulas_disponiveis %}
+                <div class="content-item">
+                    <div class="content-discipline">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        {{ aula.nome }}
+                    </div>
+
+                    <a href="{{ url_for('pesquisa_nps_gestao') }}?aula={{ aula.nome | urlencode }}" class="btn-prova">
+                        Responder Pesquisa
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-poll"></i>
+            <p>Nenhuma pesquisa NPS disponível no momento.</p>
+        </div>
+    {% endif %}
+</div>
+
+
 
 
     <script>

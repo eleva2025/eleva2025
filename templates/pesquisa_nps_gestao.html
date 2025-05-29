@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa NPS – {{ nome_aula }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #1a1a2e;
+      color: #e6f1ff;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3a0ca3;
+      --accent-color: #4cc9f0;
+      --text-primary: #e6f1ff;
+      --card-bg: #16213e;
+      --border-radius: 12px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.6rem;
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .content-list {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .content-item {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-left: 4px solid var(--primary-color);
+      border-radius: var(--border-radius);
+    }
+
+    .content-discipline {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+      color: var(--text-primary);
+    }
+
+    .message-content {
+      color: #b5b5bd;
+      font-size: 0.95rem;
+    }
+
+    .rating-options {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .rating-label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background-color: rgba(255, 255, 255, 0.07);
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+
+    .rating-label:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .rating-label input[type="radio"] {
+      accent-color: var(--accent-color);
+      transform: scale(1.2);
+    }
+
+    .textarea-nps {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      color: var(--text-primary);
+      resize: vertical;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .textarea-nps:focus {
+      border-color: var(--accent-color);
+      outline: none;
+    }
+
+    .submit-nps {
+      background-color: var(--primary-color);
+      padding: 0.8rem 1.6rem;
+      font-size: 1rem;
+      border-radius: var(--border-radius);
+      border: none;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .submit-nps:hover {
+      background-color: var(--accent-color);
+      transform: scale(1.05);
+    }
+
+    .submit-wrapper {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card" id="pesquisa-nps">
+      <div class="card-header">
+        <h2 class="card-title">
+          <i class="fas fa-poll"></i>
+          Pesquisa NPS – {{ nome_aula }}
+        </h2>
+      </div>
+
+      <form action="{{ url_for('pesquisa_nps_gestao') }}?aula={{ nome_aula | urlencode }}" method="POST" class="content-list">
+        <input type="hidden" name="aula" value="{{ nome_aula }}">
+
+        <div class="content-item">
+          <p class="content-discipline"><strong>Parte 1 – Avaliação em escala (1 a 5)</strong></p>
+          <p class="message-content">Avalie os itens abaixo com base na sua experiência na aula.</p>
+        </div>
+
+        {% for i in range(1,8) %}
+        <div class="content-item">
+          <div class="content-discipline">{{ i }}. {{ perguntas[i-1] }}</div>
+          <div class="rating-options">
+            {% for nota in range(1,6) %}
+            <label class="rating-label">
+              <input type="radio" name="r{{i}}" value="{{nota}}" required>
+              <span>{{nota}}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="content-item">
+          <p class="content-discipline"><strong>Parte 2 – Perguntas abertas</strong></p>
+          <p class="message-content">Compartilhe suas percepções para melhorarmos ainda mais.</p>
+        </div>
+
+        <div class="content-item">
+          <div class="content-discipline">8. Qual foi o principal aprendizado que você leva desta aula?</div>
+          <textarea name="r8" rows="3" class="textarea-nps" required></textarea>
+        </div>
+
+        <div class="content-item">
+          <div class="content-discipline">9. O que poderia ser melhorado para as próximas aulas?</div>
+          <textarea name="r9" rows="3" class="textarea-nps" required></textarea>
+        </div>
+
+        <div class="content-item">
+          <div class="content-discipline">10. Deseja deixar alguma mensagem para o(a) facilitador(a)?</div>
+          <textarea name="r10" rows="3" class="textarea-nps" required></textarea>
+        </div>
+
+        <div class="content-item submit-wrapper">
+          <button type="submit" class="submit-nps">
+            <i class="fas fa-paper-plane"></i> Enviar Respostas
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

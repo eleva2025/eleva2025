@@ -12,7 +12,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'sua_chave_secreta_aqui')
 
 # Configurações do Xano
 XANO_BASE_URL = os.getenv('XANO_BASE_URL', "https://xidg-u2cu-sa8e.n7c.xano.io/api:loOqZbWF")
-XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.l9gG7EYRhkoILCMjJ1AtATg6_KB3jxxHYbP0hCgOiVHBHDqrRTysxJjEwCjeas0N9cPMSPxWki4ct7Uwn0YCrWAhe2ZtTI5O.QOr_XtSatiyeJ37k38eQvg.R3emBjxcY4CKp9KWjNIJIDO1HbqxxC1OzM6m7MVP6YK8ueyUn-i3yUMby67uqqhj6iGh2Uq-WK_JmCwjc2kezCf5h2SOgv5rv82TjlGVRmgV6wGGIAQmilgyPzmk_ZdygbSCY4NUyxPOv43-fneGQQ.umRocZe_GIRCsxEPSJLTZ7sFD_qmqKzQw61fjdBnoD0")
+XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.qHzpZLM-XBA3MdMHf5ebB6FTF52dtLhYpRSv4edxcVmxLeBq7XyQcHfU-PefSLjhQGDT2QL0lS-ObDjFFAAE3dRQmsZ27zwD.UOPkcljM9ER5TRmzybqqGg.gkYpI8rD6KxWakdWLnbMbbWj2WQ9BzIJlxm4Of6_UXDkXeCkbN-6X5I5346hD5sB0K9pNoCxRy3SRz7ZSjuwsfvs-C1q_Ki7aKKHWd3dDs-g9zhLJ-52yLlEqErNqwIS1PpbCHE5z3ndfs6Oa7Rxpg.ZFjBMPM4nbNU137JVDGa9Js7NLuR_i_nIsMroWtG3Ww")
 # Estrutura das tabelas no Xano
 XANO_TABLES = {
     'users': 'user_eleva',
@@ -24,6 +24,8 @@ XANO_TABLES = {
     'professor_disciplines': 'professor_disciplines_eleva',
     'respostas_prova':'respostas_prova',
     'respostas_prova_2':'respostas_prova_2',
+    'pesquisa_nps_respostas':'pesquisa_nps_respostas'
+    
 }
 
 # Configuração do Flask-Login
@@ -192,6 +194,68 @@ def debug_user(username):
             'role': 'string'
         }
     })
+    
+
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, current_user
+from datetime import datetime
+
+@app.route('/pesquisa_nps_gestao', methods=['GET', 'POST'])
+@login_required
+def pesquisa_nps_gestao():
+    nome_aula = request.args.get('aula', 'Aula Genérica')
+    username = current_user.username.strip() if current_user.username else "Desconhecido"
+
+    perguntas = [
+        "O conteúdo da aula foi relevante para minha jornada como líder.",
+        "O(a) facilitador(a) conduziu a aula com clareza e domínio do tema.",
+        "As dinâmicas, exemplos e explicações foram aplicáveis ao meu contexto de trabalho.",
+        "O tempo da aula foi adequado ao conteúdo proposto.",
+        "Consegui me manter engajado(a) durante a aula.",
+        "Essa aula contribuiu para meu desenvolvimento profissional.",
+        "A estrutura da aula (apresentação, atividades, interação) foi bem organizada."
+    ]
+
+    if request.method == 'POST':
+        # Coleta e sanitização dos dados
+        respostas = {
+            'username': username,
+            'aula': request.form.get('aula', '').strip(),
+            'r1': int(request.form.get('r1', 0)),
+            'r2': int(request.form.get('r2', 0)),
+            'r3': int(request.form.get('r3', 0)),
+            'r4': int(request.form.get('r4', 0)),
+            'r5': int(request.form.get('r5', 0)),
+            'r6': int(request.form.get('r6', 0)),
+            'r7': int(request.form.get('r7', 0)),
+            'r8': request.form.get('r8', '').strip(),
+            'r9': request.form.get('r9', '').strip(),
+            'r10': request.form.get('r10', '').strip(),
+            'data_envio': datetime.utcnow().isoformat()
+        }
+
+        print("🔍 DEBUG - RESPOSTAS A ENVIAR:")
+        for k, v in respostas.items():
+            print(f"{k}: {v}")
+
+        try:
+            resultado = xano_request('POST', 'pesquisa_nps_respostas', data=respostas)
+            print("✅ Envio ao Xano bem-sucedido:")
+            print(resultado)
+            flash('Pesquisa enviada com sucesso!', 'success')
+        except Exception as e:
+            print(f"❌ ERRO AO ENVIAR PARA XANO: {str(e)}")
+            flash('Erro ao enviar a pesquisa. Tente novamente.', 'error')
+
+        return redirect(url_for('student_dashboard'))
+
+    # GET: renderiza o formulário
+    return render_template(
+        'pesquisa_nps_gestao.html',
+        nome_aula=nome_aula,
+        username=username,
+        perguntas=perguntas
+    )
 
 
 @app.route('/logout')
@@ -255,9 +319,6 @@ def student_dashboard():
                 })
                 discipline_ids.add(discipline_id)
 
-
-
-
         # Buscar notas
         grades = xano_request('GET', 'grades', params={'student_id': current_user.id}) or []
         processed_grades = []
@@ -288,8 +349,8 @@ def student_dashboard():
                 content_dict = {
                     "id": content.get("id"),
                     "content": content.get("content"),
-                    "title": content.get("title"),  # ← ✅ adiciona o título
-                    "link": content.get("link"),    # ← ✅ adiciona o link
+                    "title": content.get("title"),
+                    "link": content.get("link"),
                     "discipline_id": content.get("discipline_id"),
                     "discipline_name": discipline_map.get(discipline_id, "Desconhecida"),
                     "created_at": content.get("created_at")
@@ -298,17 +359,26 @@ def student_dashboard():
                 contents.append(content_dict)
                 conteudos_ids_adicionados.add(content["id"])
 
+        # ✅ Aulas com pesquisas NPS habilitadas
+        aulas_disponiveis = [
+            {"nome": "Aula 15/05"},
+            {"nome": "Aula 20/05"},
+            {"nome": "Aula 22/05"},
+        ]
 
+        # ✅ Renderiza o painel com todos os dados
         return render_template('student_dashboard.html',
                                disciplines=disciplines,
                                grades=processed_grades,
                                messages=messages,
-                               contents=contents)
+                               contents=contents,
+                               aulas_disponiveis=aulas_disponiveis)
 
     except Exception as e:
         print(f"ERRO no dashboard do aluno: {str(e)}")
         flash('Erro ao carregar dashboard', 'error')
         return redirect(url_for('home'))
+
 
 
     
