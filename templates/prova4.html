@@ -1,0 +1,102 @@
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a2e;
+        color: #e6f1ff;
+        padding: 2rem;
+    }
+
+    form {
+        max-width: 800px;
+        margin: auto;
+        background-color: #16213e;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: #4cc9f0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    label, p {
+        font-weight: bold;
+        margin-top: 1rem;
+        color: #4cc9f0;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border: none;
+        background-color: #0f3460;
+        color: white;
+        font-size: 1rem;
+        resize: vertical;
+    }
+
+    button {
+        background-color: #4cc9f0;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 2rem auto 0;
+    }
+
+    button:hover {
+        background-color: #4361ee;
+        transform: scale(1.05);
+    }
+</style>
+
+<form method="POST">
+    <h2>Prova – Autoconhecimento e Propósito</h2>
+
+    <label for="aluno_nome">Nome:</label>
+    <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+    <p>1. O cérebro reptiliano é responsável por:</p>
+    <label><input type="radio" name="q1" value="A" required> Tomadas de decisão estratégicas</label><br>
+    <label><input type="radio" name="q1" value="B"> Reações instintivas de sobrevivência</label><br>
+    <label><input type="radio" name="q1" value="C"> Capacidade de empatia</label><br>
+    <label><input type="radio" name="q1" value="D"> Análises baseadas em dados</label><br>
+
+    <p>2. Qual é o principal impacto da consciência serena no dia a dia?</p>
+    <label><input type="radio" name="q2" value="A" required> Agir sem pensar, confiando nos instintos</label><br>
+    <label><input type="radio" name="q2" value="B"> Evitar emoções para manter o controle</label><br>
+    <label><input type="radio" name="q2" value="C"> Antecipar e refletir sobre atitudes antes de agir</label><br>
+    <label><input type="radio" name="q2" value="D"> Planejar metas profissionais com base no mercado</label><br>
+
+    <p>3. O que é "blindagem da negatividade"?</p>
+    <label><input type="radio" name="q3" value="A" required> Evitar feedbacks negativos a qualquer custo</label><br>
+    <label><input type="radio" name="q3" value="B"> Revidar imediatamente críticas injustas</label><br>
+    <label><input type="radio" name="q3" value="C"> Colocar uma barreira consciente contra influências externas negativas</label><br>
+    <label><input type="radio" name="q3" value="D"> Recusar a convivência com pessoas críticas</label><br>
+
+    <p>4. Qual das alternativas descreve corretamente o conceito de "momentum decisivo"?</p>
+    <label><input type="radio" name="q4" value="A" required> O impulso de agir sem pensar</label><br>
+    <label><input type="radio" name="q4" value="B"> A habilidade de evitar conflitos em momentos importantes</label><br>
+    <label><input type="radio" name="q4" value="C"> A capacidade de acionar alta performance nos momentos cruciais</label><br>
+    <label><input type="radio" name="q4" value="D"> A escolha de não se envolver emocionalmente em decisões</label><br>
+
+    <p>5. Como o conhecimento e o equilíbrio dos três cérebros (reptiliano, analítico e consciente) pode contribuir para sua liderança ou atuação profissional?</p>
+    <textarea name="q5" required></textarea>
+
+    <p>6. Escolha dois dos pilares da inteligência emocional (autoconsciência, autogerenciamento, consciência social ou habilidades de relacionamento) e explique sua importância na convivência com colegas de equipe.</p>
+    <textarea name="q6" required></textarea>
+
+    <p>7. Em sua opinião, qual a relação entre autoconhecimento e inteligência emocional? Dê um exemplo de como isso se aplica no trabalho.</p>
+    <textarea name="q7" required></textarea>
+
+    <button type="submit">Enviar Respostas</button>
+</form>

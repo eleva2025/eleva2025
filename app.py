@@ -879,8 +879,16 @@ def prova4(disciplina_id):
         resposta_existente = xano_request('GET', 'respostas_prova_3', params={
             'aluno_nome': aluno_nome
         })
-        ja_respondido = isinstance(resposta_existente, list) and len(resposta_existente) > 0
-        print(f"🔎 Verificando se {aluno_nome} já respondeu: {ja_respondido}")
+        # após o GET
+        resposta_existente = xano_request('GET', 'respostas_prova_3', params={
+            'aluno_nome': aluno_nome
+        })
+
+        # filtra localmente por segurança
+        ja_respondido = any(
+            r.get('aluno_nome') == aluno_nome for r in resposta_existente
+        )
+
     except Exception as e:
         print(f"❌ ERRO ao verificar resposta: {str(e)}")
         ja_respondido = False
