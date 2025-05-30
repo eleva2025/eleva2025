@@ -388,6 +388,7 @@ def student_dashboard():
             {"nome": "15/05: Gestão de Talentos e Sucessão (Pedro Demetrius)"},
             {"nome": "20/05: Liderança Situacional e Fortalecimento da Cultura (Pedro Demetrius)"},
             {"nome": "22/05: Cultura Organizacional e Bem-estar (Alane Nascimento)"},
+            {"nome": "27/05: Autoconhecimento e Propósito (Janaína Reis) "},
             
         ]
 
