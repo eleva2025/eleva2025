@@ -384,9 +384,12 @@ def student_dashboard():
 
         # ✅ Aulas com pesquisas NPS habilitadas
         aulas_disponiveis = [
-            {"nome": "Aula 15/05"},
-            {"nome": "Aula 20/05"},
-            {"nome": "Aula 22/05"},
+            {"nome": "Aula Magna (Pedro Demetrius))"},
+            {"nome": "15/05: Gestão de Talentos e Sucessão (Pedro Demetrius)"},
+            {"nome": "20/05: Liderança Situacional e Fortalecimento da Cultura (Pedro Demetrius)"},
+            {"nome": "22/05: Cultura Organizacional e Bem-estar (Alane Nascimento)"},
+            {"nome": "27/05: Autoconhecimento e Propósito (Janaína Reis) "},
+            
         ]
 
         # ✅ Renderiza o painel com todos os dados
