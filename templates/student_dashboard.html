@@ -513,18 +513,17 @@
         {% if d.prova_respondida %}
             <span title="Prova respondida">✅</span>
         {% else %}
-        {% if d.provas %}
-            <div class="provas-disponiveis">
-                {% for prova in d.provas %}
-                    <a href="{{ prova.url }}" class="btn-prova">
-                        📄 Realizar Prova - {{ prova.label }}
-                    </a>
-                {% endfor %}
-            </div>
-        {% else %}
-            <span>✅ Sem provas disponíveis</span>
-        {% endif %}
-
+            {% if d.provas %}
+                <div class="provas-disponiveis">
+                    {% for prova in d.provas %}
+                        <a href="{{ prova.url }}" class="btn-prova">
+                            📄 Realizar Prova - {{ prova.label }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <span>✅ Sem provas disponíveis</span>
+            {% endif %}
         {% endif %}
 
 

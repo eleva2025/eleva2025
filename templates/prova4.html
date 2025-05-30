@@ -1,0 +1,111 @@
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a2e;
+        color: #e6f1ff;
+        padding: 2rem;
+    }
+
+    form {
+        max-width: 800px;
+        margin: auto;
+        background-color: #16213e;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: #4cc9f0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    label, p {
+        font-weight: bold;
+        margin-top: 1rem;
+        color: #4cc9f0;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border: none;
+        background-color: #0f3460;
+        color: white;
+        font-size: 1rem;
+        resize: vertical;
+    }
+
+    button {
+        background-color: #4cc9f0;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 2rem auto 0;
+    }
+
+    button:hover {
+        background-color: #4361ee;
+        transform: scale(1.05);
+    }
+</style>
+
+
+<form method="POST">
+    <!-- campos da prova aqui -->
+
+
+
+
+<h2>Prova – Autoconhecimento e Propósito</h2>
+
+<form method="POST">
+    <label for="aluno_nome">Nome:</label>
+    <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+    <p>1. Qual é um dos principais benefícios do autoconhecimento para a vida profissional?</p>
+    <label><input type="radio" name="q1" value="A" required> Evitar feedbacks</label><br>
+    <label><input type="radio" name="q1" value="B"> Aumentar a capacidade de fingir emoções</label><br>
+    <label><input type="radio" name="q1" value="C"> Tomar decisões mais conscientes e alinhadas com os valores pessoais</label><br>
+    <label><input type="radio" name="q1" value="D"> Substituir habilidades técnicas por emocionais</label><br>
+
+    <p>2. Sobre os três cérebros, qual afirmação é verdadeira?</p>
+    <label><input type="radio" name="q2" value="A" required> O cérebro reptiliano é responsável por análises racionais</label><br>
+    <label><input type="radio" name="q2" value="B"> O cérebro consciente ajuda a tomar decisões sábias e equilibradas</label><br>
+    <label><input type="radio" name="q2" value="C"> O cérebro analítico responde por impulsos imediatos</label><br>
+    <label><input type="radio" name="q2" value="D"> O cérebro reptiliano aumenta a empatia com o outro</label><br>
+
+    <p>3. Segundo a aula, qual é um sinal de desequilíbrio no uso excessivo do cérebro analítico?</p>
+    <label><input type="radio" name="q3" value="A" required> Sentimentos intensos de gratidão</label><br>
+    <label><input type="radio" name="q3" value="B"> Reações impulsivas e agressivas</label><br>
+    <label><input type="radio" name="q3" value="C"> Dificuldade em demonstrar afeto e conexão emocional</label><br>
+    <label><input type="radio" name="q3" value="D"> Capacidade de agir com sabedoria</label><br>
+
+    <p>4. O que caracteriza a Consciência Serena?</p>
+    <label><input type="radio" name="q4" value="A" required> Reagir com intensidade emocional a tudo</label><br>
+    <label><input type="radio" name="q4" value="B"> Reprimir emoções negativas para manter a produtividade</label><br>
+    <label><input type="radio" name="q4" value="C"> Ter percepção clara de si antes, durante e após as ações</label><br>
+    <label><input type="radio" name="q4" value="D"> Tomar decisões apenas com base em dados racionais</label><br>
+
+    <p>5. Como a compreensão dos três cérebros pode ajudar você a lidar melhor com situações de estresse?</p>
+    <textarea name="q5" required></textarea>
+
+    <p>6. Qual a importância de identificar seus valores pessoais ao buscar propósito na vida profissional? Dê um exemplo real ou hipotético.</p>
+    <textarea name="q6" required></textarea>
+
+    <p>7. Escolha um dos cinco fatores para gerenciar o "EU" (consciência serena, controle dos diálogos internos, blindagem da negatividade, momentum decisivo, crescimento contínuo) e explique como ele pode fortalecer sua jornada de desenvolvimento pessoal.</p>
+    <textarea name="q7" required></textarea>
+
+    <button type="submit">Enviar Respostas</button>
+</form>
+
+

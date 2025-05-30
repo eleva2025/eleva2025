@@ -24,7 +24,8 @@ XANO_TABLES = {
     'professor_disciplines': 'professor_disciplines_eleva',
     'respostas_prova':'respostas_prova',
     'respostas_prova_2':'respostas_prova_2',
-    'pesquisa_nps_respostas':'pesquisa_nps_respostas'
+    'pesquisa_nps_respostas':'pesquisa_nps_respostas',
+    'respostas_prova_3':'respostas_prova_3'
     
 }
 
@@ -301,23 +302,45 @@ def student_dashboard():
 
         for d in raw_disciplines:
             discipline_id = int(d['discipline_id'])
-            if discipline_id not in discipline_ids:
-                # Só adiciona provas se for disciplina 5
-                if discipline_id == 5:
-                    provas = [
-                        {"url": url_for('prova', disciplina_id=discipline_id), "label": "Aula 15/05"},
-                        {"url": url_for('prova2', disciplina_id=discipline_id), "label": "Aula 20/05"},
-                        {"url": url_for('prova3', disciplina_id=discipline_id), "label": "Aula 22/05"},
-                    ]
-                else:
-                    provas = []
 
-                disciplines.append({
-                    'id': discipline_id,
-                    'name': discipline_map.get(discipline_id, 'Desconhecida'),
-                    'provas': provas
-                })
-                discipline_ids.add(discipline_id)
+            if discipline_id in discipline_ids:
+                continue
+
+            provas = []
+            prova_respondida = False
+
+            if discipline_id == 6:
+                provas = [
+                    {"url": url_for('prova4', disciplina_id=discipline_id), "label": "Aula 27/05"},
+                ]
+
+                try:
+                    resposta_existente = xano_request('GET', 'respostas_prova_3') or []
+                    prova_respondida = any(
+                        r.get('aluno_nome', '').strip().lower() == current_user.username.strip().lower()
+                        for r in resposta_existente
+                    )
+                except Exception as e:
+                    print(f"Erro ao verificar prova respondida: {str(e)}")
+                    prova_respondida = False
+            else:
+                provas = []
+                prova_respondida = False
+
+
+            disciplines.append({
+                'id': discipline_id,
+                'name': discipline_map.get(discipline_id, 'Desconhecida'),
+                'provas': provas,
+                'prova_respondida': prova_respondida
+            })
+
+            discipline_ids.add(discipline_id)
+
+
+
+
+
 
         # Buscar notas
         grades = xano_request('GET', 'grades', params={'student_id': current_user.id}) or []
@@ -843,6 +866,63 @@ def prova3(disciplina_id):
 
     return render_template('prova3.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
 
+@app.route('/prova4/<int:disciplina_id>', methods=['GET', 'POST'])
+@login_required
+def prova4(disciplina_id):
+    aluno_nome = current_user.username.strip()
+
+    # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
+    try:
+        resposta_existente = xano_request('GET', 'respostas_prova_3', params={
+            'aluno_nome': aluno_nome
+        })
+        ja_respondido = isinstance(resposta_existente, list) and len(resposta_existente) > 0
+        print(f"🔎 Verificando se {aluno_nome} já respondeu: {ja_respondido}")
+    except Exception as e:
+        print(f"❌ ERRO ao verificar resposta: {str(e)}")
+        ja_respondido = False
+
+    # Submissão da prova
+    if request.method == 'POST':
+        print("📥 POST recebido")
+
+        if ja_respondido:
+            print("⚠️ Prova já respondida - não enviando de novo.")
+            flash("Você já respondeu esta prova.", "warning")
+            return redirect(url_for('student_dashboard'))  # ✅ redireciona mesmo sem reenvio
+        else:
+            try:
+                respostas = {
+                    'q1': request.form.get('q1'),
+                    'q2': request.form.get('q2'),
+                    'q3': request.form.get('q3'),
+                    'q4': request.form.get('q4'),
+                    'q5': request.form.get('q5'),
+                    'q6': request.form.get('q6'),
+                    'q7': request.form.get('q7'),
+                }
+
+                payload = {
+                    'aluno_nome': aluno_nome,
+                    'respostas': json.dumps(respostas, ensure_ascii=False),
+                    'created_at': datetime.now().isoformat()
+                }
+
+                xano_request('POST', 'respostas_prova_3', data=payload)
+                flash("Prova enviada com sucesso!", "success")
+                return redirect(url_for('student_dashboard'))
+
+            except Exception as e:
+                print(f"❌ Erro ao enviar prova: {str(e)}")
+                flash("Erro ao enviar a prova.", "error")
+
+
+    return render_template('prova4.html', 
+                           aluno_nome=aluno_nome, 
+                           disciplina_id=disciplina_id,
+                           ja_respondido=ja_respondido)
+
+
 @app.route('/prova2/<int:disciplina_id>', methods=['GET', 'POST'])
 @login_required
 def prova2(disciplina_id):
@@ -883,7 +963,41 @@ def prova2(disciplina_id):
 
     return render_template('prova2.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
 
+def salvar_respostas(aluno_nome, respostas_dict):
+    url = f"{XANO_BASE_URL}/respostas_provas_3"
+    headers = {
+        "Content-Type": "application/json"
+    }
 
+    payload = {
+        "aluno_nome": aluno_nome,
+        "respostas": respostas_dict
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print("Erro ao salvar resposta:", response.text)
+
+
+def verificar_resposta(aluno_nome, prova_nome):
+    url = f"{XANO_BASE_URL}/respostas_provas"
+    params = {
+        "aluno_nome": aluno_nome,
+        "prova_nome": prova_nome
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    response = requests.get(url, params=params, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        return len(data) > 0  # se retornou alguma resposta, já respondeu
+    else:
+        print("Erro ao verificar resposta:", response.text)
+        return False
 
     
 @app.route('/update_grade', methods=['POST'])
