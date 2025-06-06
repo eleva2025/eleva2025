@@ -1,0 +1,102 @@
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a2e;
+        color: #e6f1ff;
+        padding: 2rem;
+    }
+
+    form {
+        max-width: 800px;
+        margin: auto;
+        background-color: #16213e;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: #4cc9f0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    label, p {
+        font-weight: bold;
+        margin-top: 1rem;
+        color: #4cc9f0;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border: none;
+        background-color: #0f3460;
+        color: white;
+        font-size: 1rem;
+        resize: vertical;
+    }
+
+    button {
+        background-color: #4cc9f0;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 2rem auto 0;
+    }
+
+    button:hover {
+        background-color: #4361ee;
+        transform: scale(1.05);
+    }
+</style>
+
+<form method="POST">
+    <h2>Prova – Competências do Profissional do Futuro</h2>
+
+    <label for="aluno_nome">Nome:</label>
+    <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+    <p>1. O que significa ter pensamento crítico no ambiente de trabalho?</p>
+    <label><input type="radio" name="q1" value="A" required> Ser uma pessoa que questiona tudo o tempo todo</label><br>
+    <label><input type="radio" name="q1" value="B"> Ter coragem para ir além do óbvio e analisar dados com profundidade</label><br>
+    <label><input type="radio" name="q1" value="C"> Evitar tomar decisões para não gerar conflitos</label><br>
+    <label><input type="radio" name="q1" value="D"> Executar tarefas apenas com base na intuição</label><br>
+
+    <p>2. Qual das alternativas representa uma atitude criativa, segundo o conceito apresentado na aula?</p>
+    <label><input type="radio" name="q2" value="A" required> Criar algo 100% novo, inédito e revolucionário</label><br>
+    <label><input type="radio" name="q2" value="B"> Copiar modelos prontos sem adaptá-los</label><br>
+    <label><input type="radio" name="q2" value="C"> Unir bem duas ideias que já existem, de forma eficiente</label><br>
+    <label><input type="radio" name="q2" value="D"> Seguir sempre os padrões antigos da empresa</label><br>
+
+    <p>3. Um dos pilares da comunicação assertiva é:</p>
+    <label><input type="radio" name="q3" value="A" required> Dizer tudo o que pensa, sem filtro</label><br>
+    <label><input type="radio" name="q3" value="B"> Evitar conflitos a qualquer custo</label><br>
+    <label><input type="radio" name="q3" value="C"> O equilíbrio entre sinceridade e sabedoria na forma de se comunicar</label><br>
+    <label><input type="radio" name="q3" value="D"> Ser direto mesmo que isso gere desgaste com os outros</label><br>
+
+    <p>4. Segundo o conteúdo apresentado, o que sustenta o desenvolvimento das competências do futuro?</p>
+    <label><input type="radio" name="q4" value="A" required> Alta performance isolada</label><br>
+    <label><input type="radio" name="q4" value="B"> Conhecimento técnico constante</label><br>
+    <label><input type="radio" name="q4" value="C"> Os comportamentos essenciais: clareza, consistência, empatia e humildade</label><br>
+    <label><input type="radio" name="q4" value="D"> Participação em treinamentos obrigatórios</label><br>
+
+    <p>5. Escolha uma das competências estratégicas (pensamento crítico, visão de negócio ou foco em resultados) e explique como ela pode ser aplicada no seu contexto profissional atual.</p>
+    <textarea name="q5" required></textarea>
+
+    <p>6. Com base na aula, descreva uma ação prática que você pode tomar nos próximos 30 dias para desenvolver uma das competências do profissional do futuro.</p>
+    <textarea name="q6" required></textarea>
+
+    <p>7. Em sua opinião, qual é o papel da disciplina e da constância na construção de uma trajetória de sucesso no trabalho?</p>
+    <textarea name="q7" required></textarea>
+
+    <button type="submit">Enviar Respostas</button>
+</form>

@@ -1,0 +1,102 @@
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a2e;
+        color: #e6f1ff;
+        padding: 2rem;
+    }
+
+    form {
+        max-width: 800px;
+        margin: auto;
+        background-color: #16213e;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: #4cc9f0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    label, p {
+        font-weight: bold;
+        margin-top: 1rem;
+        color: #4cc9f0;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border: none;
+        background-color: #0f3460;
+        color: white;
+        font-size: 1rem;
+        resize: vertical;
+    }
+
+    button {
+        background-color: #4cc9f0;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 2rem auto 0;
+    }
+
+    button:hover {
+        background-color: #4361ee;
+        transform: scale(1.05);
+    }
+</style>
+
+<form method="POST">
+    <h2>Prova – Me tornei líder, e agora?</h2>
+
+    <label for="aluno_nome">Nome:</label>
+    <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+    <p>1. Qual das competências abaixo representa a autonomia, segundo a aula?</p>
+    <label><input type="radio" name="q1" value="A" required> Capacidade de seguir ordens sem questionamento</label><br>
+    <label><input type="radio" name="q1" value="B"> Liberdade para decidir com base na cultura organizacional</label><br>
+    <label><input type="radio" name="q1" value="C"> Organização pessoal e gestão do tempo de forma independente</label><br>
+    <label><input type="radio" name="q1" value="D"> Isolamento da equipe para não gerar ruídos</label><br>
+
+    <p>2. O perfil de liderança afiliativo é caracterizado por:</p>
+    <label><input type="radio" name="q2" value="A" required> Alta performance e cobrança intensa por metas</label><br>
+    <label><input type="radio" name="q2" value="B"> Foco no bem-estar e nas relações de confiança com o time</label><br>
+    <label><input type="radio" name="q2" value="C"> Foco em controle e obediência</label><br>
+    <label><input type="radio" name="q2" value="D"> Pouca abertura para feedback</label><br>
+
+    <p>3. O que diferencia um líder efetivo, segundo a aula?</p>
+    <label><input type="radio" name="q3" value="A" required> Ter apenas um estilo de liderança definido</label><br>
+    <label><input type="radio" name="q3" value="B"> Transitar entre estilos de liderança conforme o contexto e o time</label><br>
+    <label><input type="radio" name="q3" value="C"> Ser autoritário para manter a ordem</label><br>
+    <label><input type="radio" name="q3" value="D"> Focar mais nas entregas do que nas pessoas</label><br>
+
+    <p>4. Um desafio comum do perfil executor é:</p>
+    <label><input type="radio" name="q4" value="A" required> Baixa capacidade de adaptação</label><br>
+    <label><input type="radio" name="q4" value="B"> Falta de foco em resultados</label><br>
+    <label><input type="radio" name="q4" value="C"> Impaciência com processos lentos ou detalhados</label><br>
+    <label><input type="radio" name="q4" value="D"> Evitar assumir riscos</label><br>
+
+    <p>5. Escolha um dos estilos de liderança apresentados na aula (coercitivo, autoritário, afiliativo, democrático, marcador ou coach) e explique em qual situação profissional ele pode ser mais adequado.</p>
+    <textarea name="q5" required></textarea>
+
+    <p>6. Com base nos critérios SMART, transforme uma meta genérica (ex.: “melhorar a comunicação com o time”) em uma meta SMART e explique por que essa clareza é importante para a equipe.</p>
+    <textarea name="q6" required></textarea>
+
+    <p>7. Reflita sobre o seu perfil comportamental predominante (comunicador, executor, planejador ou analista). Como esse perfil pode impactar sua atuação como líder?</p>
+    <textarea name="q7" required></textarea>
+
+    <button type="submit">Enviar Respostas</button>
+</form>
