@@ -12,7 +12,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'sua_chave_secreta_aqui')
 
 # Configurações do Xano
 XANO_BASE_URL = os.getenv('XANO_BASE_URL', "https://xidg-u2cu-sa8e.n7c.xano.io/api:loOqZbWF")
-XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.u4sWm_9lBQsF4pcgOhwojZYb9BsNHqy8QxRvPB8joVT0yQMy7uCIo1Lnx0_4aNsksz3_RvO7aWoHV5OkYXqrgErAWpXx8cdd.mgY7KrekeWGtMgfa87-RqQ.N17G5qHtz_fyCKokmgxIeHN7xC4wbg1xH4hiTAQgY6CrSPoKGfNpzxLdDqHolp7yUrVP5JH_o2xH4KU4Ww9OqUvopI37i3ul8DV_5VCWbgwe8UDGxqq3ZSpmnlfPzJlTOeASJU9dx2IaFLXJSmb8Tw.cHPPc54fBfQ8iyBUEKArazfFNhm0pijhsqABXgxuvws")
+XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.yL7ENACR9aOphHidj4uqlCB6bDCvewnfNHX1KNpsb-ae6T6to-PDKa7SS72stdYVRBnE0mbI4RLKyll6oi0HXkkf_f7xiB3W.X404sP5_w9kN2w1txiyLTg.VjZLkIVKVEVdCAc2W-ZCJ-yc2tdMJHZhkJe8CKMFyu_CcGYVXWjZGQ4AwF54MFFwA2WujW8SZ7FYHpl8UeX1S-SJBkRDnzIec_1cCU8hgxGHtEbfzhsX3cee0FbwP5rbaGKjrBdzdWE80hHmuL90ng.JtprMBuxBLqO7CPNB_D8IHV7SSZ_1HQc3yzGXvmezGU")
 # Estrutura das tabelas no Xano
 XANO_TABLES = {
     'users': 'user_eleva',
@@ -389,7 +389,8 @@ def student_dashboard():
             {"nome": "20/05: Liderança Situacional e Fortalecimento da Cultura (Pedro Demetrius)"},
             {"nome": "22/05: Cultura Organizacional e Bem-estar (Alane Nascimento)"},
             {"nome": "27/05: Autoconhecimento e Propósito (Janaína Reis) "},
-            {"nome": "03/06: Competências do Profissional do Futuro (Pedro Demetrius) "}
+            {"nome": "03/06: Competências do Profissional do Futuro (Pedro Demetrius) "},
+            {"nome": "06/06: Me tornei líder, e agora? (Maria Luiza Diniz) "}
             
         ]
 
