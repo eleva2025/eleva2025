@@ -313,11 +313,11 @@ def student_dashboard():
 
             if discipline_id == 6:
                 provas = [
-                    {"url": url_for('prova5', disciplina_id=discipline_id), "label": "Aula 03/06"},
+                    {"url": url_for('prova6', disciplina_id=discipline_id), "label": "Aula 06/06"},
                 ]
 
                 try:
-                    resposta_existente = xano_request('GET', 'respostas_prova_5') or []
+                    resposta_existente = xano_request('GET', 'respostas_prova_6') or []
                     prova_respondida = any(
                         r.get('aluno_nome', '').strip().lower() == current_user.username.strip().lower()
                         for r in resposta_existente
