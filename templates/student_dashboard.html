@@ -510,21 +510,22 @@
                 <i class="fas fa-book-open"></i>
                 {{ d.name }}
 
-        {% if d.prova_respondida %}
-            <span title="Prova respondida">✅</span>
-        {% else %}
-            {% if d.provas %}
-                <div class="provas-disponiveis">
-                    {% for prova in d.provas %}
+        {% if d.provas %}
+            <div class="provas-disponiveis">
+                {% for prova in d.provas %}
+                    {% if prova.respondida %}
+                        <span title="Prova respondida">✅ {{ prova.label }}</span>
+                    {% else %}
                         <a href="{{ prova.url }}" class="btn-prova">
                             📄 Realizar Prova - {{ prova.label }}
                         </a>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <span>✅ Sem provas disponíveis</span>
-            {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <span>✅ Sem provas disponíveis</span>
         {% endif %}
+
 
 
             </div>

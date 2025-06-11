@@ -5,6 +5,8 @@ import requests
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
+from unidecode import unidecode
+
 
 
 app = Flask(__name__)
@@ -309,15 +311,60 @@ def student_dashboard():
                 continue
 
             provas = []
+
+            if discipline_id == 6:
+                respostas_5 = []
+                respostas_6 = []
+                try:
+                    respostas_5 = xano_request('GET', 'respostas_prova_5') or []
+                    respostas_6 = xano_request('GET', 'respostas_prova_6') or []
+                except Exception as e:
+                    print(f"Erro ao consultar respostas: {e}")
+
+                usuario = unidecode(current_user.username.strip().lower())
+
+                def nome_bate(resp):
+                    nome = unidecode(resp.get('aluno_nome', '').strip().lower())
+                    return usuario in nome or nome in usuario
+
+                provas = [
+                    {
+                        "url": url_for('prova5', disciplina_id=discipline_id),
+                        "label": "Aula 03/06",
+                        "respondida": any(nome_bate(r) for r in respostas_5)
+                    },
+                    {
+                        "url": url_for('prova6', disciplina_id=discipline_id),
+                        "label": "Aula 06/06",
+                        "respondida": any(nome_bate(r) for r in respostas_6)
+                    },
+                ]
+
+            disciplines.append({
+                'id': discipline_id,
+                'name': discipline_map.get(discipline_id, 'Desconhecida'),
+                'provas': provas
+            })
+
+            discipline_ids.add(discipline_id)
+
+
+        for d in raw_disciplines:
+            discipline_id = int(d['discipline_id'])
+
+            if discipline_id in discipline_ids:
+                continue
+
+            provas = []
             prova_respondida = False
 
             if discipline_id == 6:
                 provas = [
-                    {"url": url_for('prova5', disciplina_id=discipline_id), "label": "Aula 03/06"},
+                    {"url": url_for('prova6', disciplina_id=discipline_id), "label": "Aula 06/06"},
                 ]
 
                 try:
-                    resposta_existente = xano_request('GET', 'respostas_prova_5') or []
+                    resposta_existente = xano_request('GET', 'respostas_prova_6') or []
                     prova_respondida = any(
                         r.get('aluno_nome', '').strip().lower() == current_user.username.strip().lower()
                         for r in resposta_existente
@@ -328,7 +375,6 @@ def student_dashboard():
             else:
                 provas = []
                 prova_respondida = False
-
 
             disciplines.append({
                 'id': discipline_id,
