@@ -14,7 +14,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'sua_chave_secreta_aqui')
 
 # Configurações do Xano
 XANO_BASE_URL = os.getenv('XANO_BASE_URL', "https://xidg-u2cu-sa8e.n7c.xano.io/api:loOqZbWF")
-XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.pcNeRivk3KNwE-BxAxmvKM5C_sN5wKl9jy0rCcoa6EZmgt9wa1Df7w64ni7PlJbtGn4pa4w3T51B6O41Nrdr1rSbhgfvxRQ9.M9QP09e2PRxrzq7nNbwKQw.EtCEcS5ZfpsJPC0vGqdbqRumMt0feB1T39LK-zvRyBIVhRTiw5lxUZdtn41q107DKznWHSr6faIFu_mWMDG2VaUtaCbVzaH54oMAoKua3d_xF_cCF2YKLeFJQMWfrnk713KvKHd4WmPUQMMORBrGfA.fVRnEZ9635YpaB3UY9_PpiY0ar4cCVKNS6y17zKcIRM")
+XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.GWdO8fqvptu5xMF9eUHj3llM2p7GdFZTkVUqYrK6SwJoVlFoWn6VMEWXc2yrLfyYdS03SlhIYFvhnNCVWG6IwUxvT-Xx4qfD.RbT-qfi4gwF5DxC0Uw5rmA.xZlLJup3E5-9M6IL3H-9D7n2cEPa9RmklGGDfCyZrZUOdFNL--ns0rRTdld1gqtndUbOj3ef9_z1Y5YWfaA6CaAhbL8Ue7mHYtl-llghIvbrHg9A9SuDLOZhn8_2XEyOvP4P4Nnn8bEpdI3r3VQi_g.aOCboKtt0wkuh5tazW0m3R9oeBQFfGAgKdj-MU_m2Cc")
 # Estrutura das tabelas no Xano
 XANO_TABLES = {
     'users': 'user_eleva',
@@ -29,8 +29,8 @@ XANO_TABLES = {
     'pesquisa_nps_respostas':'pesquisa_nps_respostas',
     'respostas_prova_3':'respostas_prova_3',
     'respostas_prova_5':'respostas_prova_5',
-    'respostas_prova_6':'respostas_prova_6'
-    
+    'respostas_prova_6':'respostas_prova_6',
+    'respostas_prova_7':'respostas_prova_7'
 }
 
 # Configuração do Flask-Login
@@ -315,9 +315,11 @@ def student_dashboard():
             if discipline_id == 6:
                 respostas_5 = []
                 respostas_6 = []
+                respostas_7 = []
                 try:
                     respostas_5 = xano_request('GET', 'respostas_prova_5') or []
                     respostas_6 = xano_request('GET', 'respostas_prova_6') or []
+                    respostas_7 = xano_request('GET', 'respostas_prova_7') or []
                 except Exception as e:
                     print(f"Erro ao consultar respostas: {e}")
 
@@ -337,6 +339,11 @@ def student_dashboard():
                         "url": url_for('prova6', disciplina_id=discipline_id),
                         "label": "Aula 06/06",
                         "respondida": any(nome_bate(r) for r in respostas_6)
+                    },
+                    {
+                        "url": url_for('prova7', disciplina_id=discipline_id),
+                        "label": "Aula 10/06",
+                        "respondida": any(nome_bate(r) for r in respostas_7)
                     },
                 ]
 
@@ -1044,7 +1051,70 @@ def prova6(disciplina_id):
                            disciplina_id=disciplina_id,
                            ja_respondido=ja_respondido)
 
+@app.route('/prova7/<int:disciplina_id>', methods=['GET', 'POST'])
+@login_required
+def prova7(disciplina_id):
+    aluno_nome = current_user.username.strip()
 
+    # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
+    try:
+        resposta_existente = xano_request('GET', 'respostas_prova_7', params={
+            'aluno_nome': aluno_nome
+        })
+        # após o GET
+        resposta_existente = xano_request('GET', 'respostas_prova_7', params={
+            'aluno_nome': aluno_nome
+        })
+
+        # filtra localmente por segurança
+        ja_respondido = any(
+            r.get('aluno_nome') == aluno_nome for r in resposta_existente
+        )
+
+    except Exception as e:
+        print(f"❌ ERRO ao verificar resposta: {str(e)}")
+        ja_respondido = False
+
+    # Submissão da prova
+    if request.method == 'POST':
+        print("📥 POST recebido")
+
+        if ja_respondido:
+            print("⚠️ Prova já respondida - não enviando de novo.")
+            flash("Você já respondeu esta prova.", "warning")
+            return redirect(url_for('student_dashboard'))  # ✅ redireciona mesmo sem reenvio
+        else:
+            try:
+                respostas = {
+                    'q1': request.form.get('q1'),
+                    'q2': request.form.get('q2'),
+                    'q3': request.form.get('q3'),
+                    'q4': request.form.get('q4'),
+                    'q5': request.form.get('q5'),
+                    'q6': request.form.get('q6'),
+                    'q7': request.form.get('q7'),
+                }
+
+                payload = {
+                    'aluno_nome': aluno_nome,
+                    'respostas': json.dumps(respostas, ensure_ascii=False),
+                    'created_at': datetime.now().isoformat()
+                }
+
+                xano_request('POST', 'respostas_prova_7', data=payload)
+                flash("Prova enviada com sucesso!", "success")
+                return redirect(url_for('student_dashboard'))
+
+            except Exception as e:
+                print(f"❌ Erro ao enviar prova: {str(e)}")
+                flash("Erro ao enviar a prova.", "error")
+
+
+    return render_template('prova7.html', 
+                           aluno_nome=aluno_nome, 
+                           disciplina_id=disciplina_id,
+                           ja_respondido=ja_respondido)
+    
 @app.route('/prova2/<int:disciplina_id>', methods=['GET', 'POST'])
 @login_required
 def prova2(disciplina_id):
