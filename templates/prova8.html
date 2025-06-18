@@ -1,0 +1,102 @@
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a2e;
+        color: #e6f1ff;
+        padding: 2rem;
+    }
+
+    form {
+        max-width: 800px;
+        margin: auto;
+        background-color: #16213e;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: #4cc9f0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    label, p {
+        font-weight: bold;
+        margin-top: 1rem;
+        color: #4cc9f0;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border: none;
+        background-color: #0f3460;
+        color: white;
+        font-size: 1rem;
+        resize: vertical;
+    }
+
+    button {
+        background-color: #4cc9f0;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 2rem auto 0;
+    }
+
+    button:hover {
+        background-color: #4361ee;
+        transform: scale(1.05);
+    }
+</style>
+
+<form method="POST">
+    <h2>Prova – Inteligência Emocional e Saúde Mental para Líderes</h2>
+
+    <label for="aluno_nome">Nome:</label>
+    <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+    <p>1. O que compõe a base de uma emoção, segundo a aula?</p>
+    <label><input type="radio" name="q1" value="A" required> Sensações, memórias e instinto</label><br>
+    <label><input type="radio" name="q1" value="B"> Pensamento, sentimento e comportamento</label><br>
+    <label><input type="radio" name="q1" value="C"> Crenças, memórias e linguagem</label><br>
+    <label><input type="radio" name="q1" value="D"> Desejos, atitudes e ações</label><br>
+
+    <p>2. O que é considerado um sinal comum do “modo manutenção”?</p>
+    <label><input type="radio" name="q2" value="A" required> Explosões emocionais frequentes</label><br>
+    <label><input type="radio" name="q2" value="B"> Forte engajamento com as tarefas</label><br>
+    <label><input type="radio" name="q2" value="C"> Emoções reguladas, porém mais neutras</label><br>
+    <label><input type="radio" name="q2" value="D"> Desconexão total com o propósito</label><br>
+
+    <p>3. Em relação ao estresse, o conteúdo da aula afirma que:</p>
+    <label><input type="radio" name="q3" value="A" required> Todo tipo de estresse é prejudicial à saúde</label><br>
+    <label><input type="radio" name="q3" value="B"> O estresse funcional ocorre de forma crônica</label><br>
+    <label><input type="radio" name="q3" value="C"> O estresse pode ser adaptativo quando ocorre em picos sob demanda</label><br>
+    <label><input type="radio" name="q3" value="D"> O estresse só acontece em situações reais de perigo</label><br>
+
+    <p>4. O que é “descatastrofizar” uma situação?</p>
+    <label><input type="radio" name="q4" value="A" required> Ignorar os problemas até que desapareçam</label><br>
+    <label><input type="radio" name="q4" value="B"> Fazer terapia para evitar pensamentos negativos</label><br>
+    <label><input type="radio" name="q4" value="C"> Reduzir o impacto emocional revendo a real gravidade da situação</label><br>
+    <label><input type="radio" name="q4" value="D"> Treinar o cérebro para evitar qualquer emoção</label><br>
+
+    <p>5. Qual a diferença entre estresse funcional e estresse disfuncional? Dê um exemplo de cada com base na sua rotina profissional.</p>
+    <textarea name="q5" required></textarea>
+
+    <p>6. Como um líder pode ser um promotor de saúde mental em sua equipe? Cite pelo menos duas atitudes práticas mencionadas na aula.</p>
+    <textarea name="q6" required></textarea>
+
+    <p>7. Com base nos três pilares do sentido (energia, habilidade e contribuição social), reflita sobre uma atividade profissional que você realiza e que se aproxima do seu propósito.</p>
+    <textarea name="q7" required></textarea>
+
+    <button type="submit">Enviar Respostas</button>
+</form>
