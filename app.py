@@ -317,6 +317,7 @@ def student_dashboard():
                 respostas_5 = []
                 respostas_6 = []
                 respostas_7 = []
+                respostas_8 = []
                 try:
                     respostas_5 = xano_request('GET', 'respostas_prova_5') or []
                     respostas_6 = xano_request('GET', 'respostas_prova_6') or []
