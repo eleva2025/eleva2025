@@ -14,7 +14,7 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'sua_chave_secreta_aqui')
 
 # Configurações do Xano
 XANO_BASE_URL = os.getenv('XANO_BASE_URL', "https://xidg-u2cu-sa8e.n7c.xano.io/api:loOqZbWF")
-XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.2gfIz8ZAV-nDZwjmRvD6Wdlz85qqXsChoekI-GfAp5aUC7lJYUDR7V_HwMVKubUD-BQO9ilQI5V45mcoe9GoFaX6F-sKICwk.aWQn7zNBgJ2iFjnPD0u9bg.pQnMhAHy9VvhW5cKbn_7zwKR2rOLgb6B9sY-8QfQwtgujmOvIJ-ifxtzNvAiXmAEmDuAAgTr0u-htixsZRVVmrn8t8Nnwe61yQfZ5tdYQyRdx1oiGtBiiyulvkFqShBeIarWzQ-EJDHHMhRYB59POA.3UVyxvhPYwSXxp7yN7FwP9sAELLB0tq8yo4FmbmdGrE")
+XANO_API_KEY = os.getenv('XANO_API_KEY', "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiemlwIjoiREVGIn0.t5rFkxOF08SHVC19yBwzC7sVl-d-1OFY9c0W3txkPOu8mcfVpYVTBFTHrrPo2maFn3pCG0T2cViPBY4F26SdLyyZd-pNh9A4.lZOuRo1jjvrjW52BANc7mQ.z8nwSXR1xHnMgO2OUG7yTSwvPoa1jk4eNLJFnzHVRJDJda8GwHytTPmwOOsWXIDeGQEbJ5tiFrtzTTccWA_6JJIkk6qavCAd5Bl0GwAD7LJ_HBYRdcmArq09w7tqEFQAzmrGHOFP33V9bdMp2dbX8w.GxOUnFkl1fgs1UMdjvbJywi_r2uVqCNk1i7eFu444Ck")
 # Estrutura das tabelas no Xano
 XANO_TABLES = {
     'users': 'user_eleva',
@@ -1131,11 +1131,11 @@ def prova8(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_7', params={
+        resposta_existente = xano_request('GET', 'respostas_prova_8', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_7', params={
+        resposta_existente = xano_request('GET', 'respostas_prova_8', params={
             'aluno_nome': aluno_nome
         })
 
