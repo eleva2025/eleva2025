@@ -1,0 +1,102 @@
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #1a1a2e;
+        color: #e6f1ff;
+        padding: 2rem;
+    }
+
+    form {
+        max-width: 800px;
+        margin: auto;
+        background-color: #16213e;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+        color: #4cc9f0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    label, p {
+        font-weight: bold;
+        margin-top: 1rem;
+        color: #4cc9f0;
+    }
+
+    textarea, input[type="text"] {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        border: none;
+        background-color: #0f3460;
+        color: white;
+        font-size: 1rem;
+        resize: vertical;
+    }
+
+    button {
+        background-color: #4cc9f0;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        margin: 2rem auto 0;
+    }
+
+    button:hover {
+        background-color: #4361ee;
+        transform: scale(1.05);
+    }
+</style>
+
+<form method="POST">
+    <h2>Prova – Gestão de Conflitos e Resolução de Problemas</h2>
+
+    <label for="aluno_nome">Nome:</label>
+    <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+    <p>1. O que caracteriza um conflito funcional?</p>
+    <label><input type="radio" name="q1" value="A" required> Gera tensão e clima hostil</label><br>
+    <label><input type="radio" name="q1" value="B"> É baseado na busca de culpados</label><br>
+    <label><input type="radio" name="q1" value="C"> Estimula inovação, crescimento e solução de problemas</label><br>
+    <label><input type="radio" name="q1" value="D"> Acontece apenas entre líderes e subordinados</label><br>
+
+    <p>2. O que é essencial na etapa de identificação do problema na resolução de conflitos?</p>
+    <label><input type="radio" name="q2" value="A" required> Procurar os culpados</label><br>
+    <label><input type="radio" name="q2" value="B"> Focar nas emoções envolvidas</label><br>
+    <label><input type="radio" name="q2" value="C"> Separar fatos das emoções e focar no problema</label><br>
+    <label><input type="radio" name="q2" value="D"> Esperar que o tempo resolva sozinho</label><br>
+
+    <p>3. Qual é o impacto de uma gestão eficaz de conflitos?</p>
+    <label><input type="radio" name="q3" value="A" required> Queda de produtividade e aumento do turnover</label><br>
+    <label><input type="radio" name="q3" value="B"> Fortalecimento do clima organizacional e da colaboração</label><br>
+    <label><input type="radio" name="q3" value="C"> Redução da autonomia e inovação</label><br>
+    <label><input type="radio" name="q3" value="D"> Isolamento das equipes</label><br>
+
+    <p>4. Quando é mais indicado usar o estilo de evitação em conflitos?</p>
+    <label><input type="radio" name="q4" value="A" required> Em situações urgentes</label><br>
+    <label><input type="radio" name="q4" value="B"> Em disputas de poder entre líderes</label><br>
+    <label><input type="radio" name="q4" value="C"> Quando o tempo é estratégico e o impacto é baixo</label><br>
+    <label><input type="radio" name="q4" value="D"> Sempre que o outro estiver errado</label><br>
+
+    <p>5. Escolha dois estilos de gestão de conflitos apresentados no modelo Thomas-Kilmann e compare suas principais características e aplicações.</p>
+    <textarea name="q5" required></textarea>
+
+    <p>6. De que forma a gestão de conflitos bem conduzida pode impactar a produtividade e o clima da equipe?</p>
+    <textarea name="q6" required></textarea>
+
+    <p>7. Reflita sobre uma situação de conflito que você já vivenciou. Como teria sido diferente se tivesse utilizado a metodologia de resolução de problemas?</p>
+    <textarea name="q7" required></textarea>
+
+    <button type="submit">Enviar Respostas</button>
+</form>
