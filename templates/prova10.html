@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Prova – Gestão Estratégica de Pessoas no Franchising</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1a1a2e;
+            color: #e6f1ff;
+            padding: 2rem;
+        }
+
+        form {
+            max-width: 800px;
+            margin: auto;
+            background-color: #16213e;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #4cc9f0;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        label, p {
+            font-weight: bold;
+            margin-top: 1rem;
+            color: #4cc9f0;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: none;
+            background-color: #0f3460;
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+
+        button {
+            background-color: #4cc9f0;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+        }
+
+        button:hover {
+            background-color: #4361ee;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        <h2>Prova – Gestão Estratégica de Pessoas no Franchising</h2>
+
+        <label for="aluno_nome">Nome:</label>
+        <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+        <p>1) O que cabe ao franqueado na gestão de pessoas?</p>
+        <label><input type="radio" name="q1" value="A" required> Criar uma nova marca local</label><br>
+        <label><input type="radio" name="q1" value="B"> Treinar e liderar sua equipe com autonomia e alinhamento à cultura</label><br>
+        <label><input type="radio" name="q1" value="C"> Definir a cultura da franqueadora</label><br>
+        <label><input type="radio" name="q1" value="D"> Ter acesso irrestrito aos lucros da franqueadora</label><br>
+
+        <p>2) Um dos principais desafios na gestão de pessoas no franchising é:</p>
+        <label><input type="radio" name="q2" value="A" required> Alta remuneração de todos os cargos</label><br>
+        <label><input type="radio" name="q2" value="B"> Ter equipes pequenas</label><br>
+        <label><input type="radio" name="q2" value="C"> Garantir engajamento mesmo com lideranças locais diversas</label><br>
+        <label><input type="radio" name="q2" value="D"> Manter a cultura do franqueado acima da da marca</label><br>
+
+        <p>3) O que pode prejudicar a experiência do cliente em unidades franqueadas?</p>
+        <label><input type="radio" name="q3" value="A" required> Treinamento contínuo</label><br>
+        <label><input type="radio" name="q3" value="B"> Estilo de liderança alinhado à marca</label><br>
+        <label><input type="radio" name="q3" value="C"> Variações na aplicação dos padrões da marca</label><br>
+        <label><input type="radio" name="q3" value="D"> Cultura organizacional clara</label><br>
+
+        <p>4) O que se espera da liderança local nas franquias?</p>
+        <label><input type="radio" name="q4" value="A" required> Total independência de decisões culturais</label><br>
+        <label><input type="radio" name="q4" value="B"> Desconhecimento das diretrizes da marca</label><br>
+        <label><input type="radio" name="q4" value="C"> Atuação como embaixadora da cultura da franqueadora</label><br>
+        <label><input type="radio" name="q4" value="D"> Foco exclusivo em metas de vendas</label><br>
+
+        <p>5) Reflita sobre o papel dos indicadores de performance e clima em uma rede de franquias. Como eles contribuem para uma gestão de pessoas mais estratégica?</p>
+        <textarea name="q5" required></textarea>
+
+        <p>6) Imagine que você está assumindo uma unidade franqueada com baixo desempenho e clima ruim. Quais seriam seus primeiros passos para engajar a equipe e alinhar à cultura da marca?</p>
+        <textarea name="q6" required></textarea>
+
+        <p>7) Como a padronização e a flexibilidade local podem coexistir na gestão de pessoas em redes de franquias?</p>
+        <textarea name="q7" required></textarea>
+
+        <button type="submit">Enviar Respostas</button>
+    </form>
+</body>
+</html>
