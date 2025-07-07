@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Prova – Gestão de Equipes de Vendas e Negociação</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #1a1a2e;
+            color: #e6f1ff;
+            padding: 2rem;
+        }
+
+        form {
+            max-width: 800px;
+            margin: auto;
+            background-color: #16213e;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #4cc9f0;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        label, p {
+            font-weight: bold;
+            margin-top: 1rem;
+            color: #4cc9f0;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: none;
+            background-color: #0f3460;
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+
+        button {
+            background-color: #4cc9f0;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+        }
+
+        button:hover {
+            background-color: #4361ee;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        <h2>Prova – Gestão de Equipes de Vendas e Negociação</h2>
+
+        <label for="aluno_nome">Nome:</label>
+        <input type="text" name="aluno_nome" value="{{ aluno_nome }}" required readonly>
+
+        <p>1) Segundo Daniel Pink, o principal fator para alta performance é:</p>
+        <label><input type="radio" name="q1" value="A" required> Incentivo financeiro</label><br>
+        <label><input type="radio" name="q1" value="B"> Pressão constante por metas</label><br>
+        <label><input type="radio" name="q1" value="C"> Motivação intrínseca</label><br>
+        <label><input type="radio" name="q1" value="D"> Recompensas materiais imediatas</label><br>
+
+        <p>2) O que é consistência operacional?</p>
+        <label><input type="radio" name="q2" value="A" required> Capacidade de mudar processos o tempo todo</label><br>
+        <label><input type="radio" name="q2" value="B"> Manutenção do mesmo nível de entrega, independentemente do cenário</label><br>
+        <label><input type="radio" name="q2" value="C"> Foco apenas em campanhas promocionais</label><br>
+        <label><input type="radio" name="q2" value="D"> Adaptabilidade irrestrita aos desejos dos clientes</label><br>
+
+        <p>3) No modelo de franchising, o papel do líder comercial é:</p>
+        <label><input type="radio" name="q3" value="A" required> Romper com os padrões e inovar</label><br>
+        <label><input type="radio" name="q3" value="B"> Executar com excelência os padrões e propor melhorias com base nisso</label><br>
+        <label><input type="radio" name="q3" value="C"> Apenas cumprir ordens da franqueadora</label><br>
+        <label><input type="radio" name="q3" value="D"> Ignorar os indicadores da franqueadora</label><br>
+
+        <p>4) Qual das competências abaixo é essencial no perfil de um profissional de vendas?</p>
+        <label><input type="radio" name="q4" value="A" required> Obediência rígida às regras</label><br>
+        <label><input type="radio" name="q4" value="B"> Proatividade, empatia e habilidade de comunicação</label><br>
+        <label><input type="radio" name="q4" value="C"> Timidez e introspecção</label><br>
+        <label><input type="radio" name="q4" value="D"> Preferência por tarefas técnicas e repetitivas</label><br>
+
+        <p>5) Explique a importância da consistência operacional na rotina do varejo. Como ela impacta nos resultados da equipe?</p>
+        <textarea name="q5" required></textarea>
+
+        <p>6) A cultura de resultado foi destacada na aula como um diferencial. Como você tem praticado (ou pretende praticar) essa cultura com seu time?</p>
+        <textarea name="q6" required></textarea>
+
+        <p>7) Quais são os principais desafios de liderar equipes de vendas no modelo de franchising? Como equilibrar padrão e inovação?</p>
+        <textarea name="q7" required></textarea>
+
+        <button type="submit">Enviar Respostas</button>
+    </form>
+</body>
+</html>
