@@ -487,7 +487,8 @@ def student_dashboard():
             {"nome": "24/06: Gestão de Conflitos e Resolução de Problemas (Giovanna Diniz) "},
             {"nome": "26/06: Gestão Estratégica de Pessoas no Franchising (Clarissa Medeiros) "},
             {"nome": "01/07: Desenvolvimento da Cultura de Feedback (Alane Nascimento) "},
-            {"nome": "03/07: Gestão de Equipes de Vendas e Negociação (Fabiana Rodrigues) "}
+            {"nome": "03/07: Gestão de Equipes de Vendas e Negociação (Fabiana Rodrigues) "},
+            {"nome": "10/07: Gestão Financeira no Franchising (lexandre Custódio) "}
         ]
 
         # ✅ Renderiza o painel com todos os dados
