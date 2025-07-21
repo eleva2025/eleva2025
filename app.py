@@ -352,11 +352,11 @@ def student_dashboard():
                     return usuario in nome or nome in usuario
 
                 provas = [
-                    {
-                        "url": url_for('prova1', disciplina_id=discipline_id),
-                        "label": "Autoconhecimento e Propósito",
-                        "respondida": any(nome_bate(r) for r in respostas_1)
-                    },
+                    # {
+                    #     "url": url_for('prova1', disciplina_id=discipline_id),
+                    #     "label": "Autoconhecimento e Propósito",
+                    #     "respondida": any(nome_bate(r) for r in respostas_)
+                    # },
                     {
                         "url": url_for('prova2', disciplina_id=discipline_id),
                         "label": "Liderança Situacional e Fortalecimento da Cultura",
@@ -369,7 +369,7 @@ def student_dashboard():
                     },
                     {
                         "url": url_for('prova5', disciplina_id=discipline_id),
-                        "label": "Aula 03/06",
+                        "label": "Autoconhecimento e Propósito",
                         "respondida": any(nome_bate(r) for r in respostas_5)
                     },
                     {
