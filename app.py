@@ -25,6 +25,7 @@ XANO_TABLES = {
     'student_disciplines': 'student_disciplines_eleva',
     'professor_disciplines': 'professor_disciplines_eleva',
     'respostas_prova':'respostas_prova',
+    'respostas_prova_1':'respostas_prova_1',
     'respostas_prova_2':'respostas_prova_2',
     'pesquisa_nps_respostas':'pesquisa_nps_respostas',
     'respostas_prova_3':'respostas_prova_3',
@@ -318,6 +319,7 @@ def student_dashboard():
             provas = []
 
             if discipline_id == 6:
+                respostas_1 = []
                 respostas_2 = []
                 respostas_3 = []
                 respostas_5 = []
@@ -329,6 +331,7 @@ def student_dashboard():
                 respostas_11 = []
                 respostas_12 = []
                 try:
+                    respostas_1 = xano_request('GET', 'respostas_prova_1') or []
                     respostas_2 = xano_request('GET', 'respostas_prova_2') or []
                     respostas_3 = xano_request('GET', 'respostas_prova_3') or []
                     respostas_5 = xano_request('GET', 'respostas_prova_5') or []
@@ -349,6 +352,11 @@ def student_dashboard():
                     return usuario in nome or nome in usuario
 
                 provas = [
+                    {
+                        "url": url_for('prova1', disciplina_id=discipline_id),
+                        "label": "Autoconhecimento e Propósito",
+                        "respondida": any(nome_bate(r) for r in respostas_1)
+                    },
                     {
                         "url": url_for('prova2', disciplina_id=discipline_id),
                         "label": "Liderança Situacional e Fortalecimento da Cultura",
@@ -902,45 +910,109 @@ def admin_dashboard():
         return redirect(url_for('home'))
 
 
-@app.route('/prova/<int:disciplina_id>', methods=['GET', 'POST'])
+# @app.route('/prova/<int:disciplina_id>', methods=['GET', 'POST'])
+# @login_required
+# def prova(disciplina_id):
+#     print("⚡ Método recebido:", request.method)
+#     aluno_nome = current_user.username
+
+#     # 🚀 Submissão da prova
+#     if request.method == 'POST':
+#         respostas = {
+#             'q1': request.form.get('q1'),
+#             'q2': request.form.get('q2'),
+#             'q3': request.form.get('q3'),
+#             'q4': request.form.get('q4'),
+#             'q5': request.form.get('q5'),
+#             'q6': request.form.get('q6'),
+#             'q7': request.form.get('q7'),
+#         }
+
+#         # Serializa para texto JSON
+#         respostas_json_str = json.dumps(respostas, ensure_ascii=False)
+
+#         payload = {
+#             'aluno_nome': aluno_nome,
+#             'disciplina_id': disciplina_id,
+#             'respostas': respostas_json_str,  # ✅ como string para campo do tipo text
+#             'created_at': datetime.now().isoformat()
+#         }
+
+#         print("📤 Enviando payload:", payload)
+
+#         try:
+#             xano_request('POST', 'respostas_prova_1', data=payload)
+#             flash('Prova enviada com sucesso!', 'success')
+#             return redirect(url_for('student_dashboard'))
+#         except Exception as e:
+#             print(f"Erro ao enviar prova: {str(e)}")
+#             flash('Erro ao enviar prova', 'error')
+
+#     return render_template('prova.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
+
+@app.route('/prova1/<int:disciplina_id>', methods=['GET', 'POST'])
 @login_required
-def prova(disciplina_id):
-    print("⚡ Método recebido:", request.method)
-    aluno_nome = current_user.username
+def prova1(disciplina_id):
+    aluno_nome = current_user.username.strip()
 
-    # 🚀 Submissão da prova
+    # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
+    try:
+        resposta_existente = xano_request('GET', 'respostas_prova_1', params={
+            'aluno_nome': aluno_nome
+        })
+        # após o GET
+        resposta_existente = xano_request('GET', 'respostas_prova_1', params={
+            'aluno_nome': aluno_nome
+        })
+
+        # filtra localmente por segurança
+        ja_respondido = any(
+            r.get('aluno_nome') == aluno_nome for r in resposta_existente
+        )
+
+    except Exception as e:
+        print(f"❌ ERRO ao verificar resposta: {str(e)}")
+        ja_respondido = False
+
+    # Submissão da prova
     if request.method == 'POST':
-        respostas = {
-            'q1': request.form.get('q1'),
-            'q2': request.form.get('q2'),
-            'q3': request.form.get('q3'),
-            'q4': request.form.get('q4'),
-            'q5': request.form.get('q5'),
-            'q6': request.form.get('q6'),
-            'q7': request.form.get('q7'),
-        }
+        print("📥 POST recebido")
 
-        # Serializa para texto JSON
-        respostas_json_str = json.dumps(respostas, ensure_ascii=False)
+        if ja_respondido:
+            print("⚠️ Prova já respondida - não enviando de novo.")
+            flash("Você já respondeu esta prova.", "warning")
+            return redirect(url_for('student_dashboard'))  # ✅ redireciona mesmo sem reenvio
+        else:
+            try:
+                respostas = {
+                    'q1': request.form.get('q1'),
+                    'q2': request.form.get('q2'),
+                    'q3': request.form.get('q3'),
+                    'q4': request.form.get('q4'),
+                    'q5': request.form.get('q5'),
+                    'q6': request.form.get('q6'),
+                    'q7': request.form.get('q7'),
+                }
 
-        payload = {
-            'aluno_nome': aluno_nome,
-            'disciplina_id': disciplina_id,
-            'respostas': respostas_json_str,  # ✅ como string para campo do tipo text
-            'created_at': datetime.now().isoformat()
-        }
+                payload = {
+                    'aluno_nome': aluno_nome,
+                    'respostas': json.dumps(respostas, ensure_ascii=False),
+                    'created_at': datetime.now().isoformat()
+                }
 
-        print("📤 Enviando payload:", payload)
+                xano_request('POST', 'respostas_prova_1', data=payload)
+                flash("Prova enviada com sucesso!", "success")
+                return redirect(url_for('student_dashboard'))
 
-        try:
-            xano_request('POST', 'respostas_prova_1', data=payload)
-            flash('Prova enviada com sucesso!', 'success')
-            return redirect(url_for('student_dashboard'))
-        except Exception as e:
-            print(f"Erro ao enviar prova: {str(e)}")
-            flash('Erro ao enviar prova', 'error')
+            except Exception as e:
+                print(f"❌ Erro ao enviar prova: {str(e)}")
+                flash("Erro ao enviar a prova.", "error")
 
-    return render_template('prova.html', disciplina_id=disciplina_id, aluno_nome=aluno_nome)
+
+    return render_template('prova4.html', 
+                           aluno_nome=aluno_nome, 
+                           disciplina_id=disciplina_id,
+                           ja_respondido=ja_respondido)
 
 @app.route('/prova3/<int:disciplina_id>', methods=['GET', 'POST'])
 @login_required
