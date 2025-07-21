@@ -363,8 +363,8 @@ def student_dashboard():
                         "respondida": any(nome_bate(r) for r in respostas_2)
                     },
                     {
-                        "url": url_for('prova3', disciplina_id=discipline_id),
-                        "label": "Cultura Organizacional e Bem-Estar",
+                        "url": url_for('prova4', disciplina_id=discipline_id),
+                        "label": "Autoconhecimento e Propósito",
                         "respondida": any(nome_bate(r) for r in respostas_3)
                     },
                     {
