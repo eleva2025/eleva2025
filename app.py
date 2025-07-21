@@ -1064,7 +1064,7 @@ def prova3(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_5', data=payload)
+                xano_request('POST', 'respostas_prova_3', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
