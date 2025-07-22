@@ -41,8 +41,15 @@ XANO_TABLES = {
     'prova_lideranca_situacional':'prova_lideranca_situacional',
     'prova_cultura_organizacional':'prova_cultura_organizacional',
     'prova_gestao_tal':'prova_gestao_tal',
-    'prova_autoconhecimento':'prova_autoconhecimento'
-    
+    'prova_autoconhecimento':'prova_autoconhecimento',
+    'prova_profissional_futuro':'prova_profissional_futuro',
+    'prova_metorneilider':'prova_metorneilider',
+    'prova_inteligencia_emocional':'prova_inteligencia_emocional',
+    'prova_comunicacao_assertiva':'prova_comunicacao_assertiva',
+    'prova_gestao_conflitos':'prova_gestao_conflitos',
+    'prova_gestao_estrategica':'prova_gestao_estrategica',
+    'prova_cultura_feedback':'prova_cultura_feedback',
+    'prova_gestao_equipe':'prova_gestao_equipe,'
 }
 
 # Configuração do Flask-Login
@@ -342,14 +349,14 @@ def student_dashboard():
                     respostas_1 = xano_request('GET', 'prova_gestao_tal') or []
                     respostas_2 = xano_request('GET', 'prova_lideranca_situacional') or []
                     respostas_3 = xano_request('GET', 'prova_cultura_organizacional') or []
-                    respostas_5 = xano_request('GET', 'respostas_prova_5') or []
-                    respostas_6 = xano_request('GET', 'respostas_prova_6') or []
-                    respostas_7 = xano_request('GET', 'respostas_prova_7') or []
-                    respostas_8 = xano_request('GET', 'respostas_prova_8') or []
-                    respostas_9 = xano_request('GET', 'respostas_prova_9') or []
-                    respostas_10 = xano_request('GET', 'respostas_prova_10') or []
-                    respostas_11 = xano_request('GET', 'respostas_prova_11') or []
-                    respostas_12 = xano_request('GET', 'respostas_prova_12') or []
+                    respostas_5 = xano_request('GET', 'prova_profissional_futuro') or []
+                    respostas_6 = xano_request('GET', 'prova_metorneilider') or []
+                    respostas_7 = xano_request('GET', 'prova_inteligencia_emocional') or []
+                    respostas_8 = xano_request('GET', 'prova_comunicacao_assertiva') or []
+                    respostas_9 = xano_request('GET', 'prova_gestao_conflitos') or []
+                    respostas_10 = xano_request('GET', 'prova_gestao_estrategica') or []
+                    respostas_11 = xano_request('GET', 'prova_cultura_feedback') or []
+                    respostas_12 = xano_request('GET', 'prova_gestao_equipe') or []
                 except Exception as e:
                     print(f"Erro ao consultar respostas: {e}")
 
@@ -380,44 +387,44 @@ def student_dashboard():
                         "label": "Autoconhecimento e Propósito",
                         "respondida": any(nome_bate(r) for r in respostas)
                     },
-                    # {
-                    #     "url": url_for('prova5', disciplina_id=discipline_id),
-                    #     "label": "Autoconhecimento e Propósito",
-                    #     "respondida": any(nome_bate(r) for r in respostas_5)
-                    # },
+                    {
+                        "url": url_for('prova5', disciplina_id=discipline_id),
+                        "label": "Competências do Profissional do Futuro",
+                        "respondida": any(nome_bate(r) for r in respostas_5)
+                    },
                     {
                         "url": url_for('prova6', disciplina_id=discipline_id),
-                        "label": "Aula 06/06",
+                        "label": "Me tornei líder, e agora?",
                         "respondida": any(nome_bate(r) for r in respostas_6)
                     },
                     {
                         "url": url_for('prova7', disciplina_id=discipline_id),
-                        "label": "Aula 10/06",
+                        "label": "Inteligência Emocional e Saúde Mental para Líderes",
                         "respondida": any(nome_bate(r) for r in respostas_7)
                     },
                     {
                         "url": url_for('prova8', disciplina_id=discipline_id),
-                        "label": "Aula 17/06",
+                        "label": "Comunicação Assertiva e Comunicação Não-Violenta",
                         "respondida": any(nome_bate(r) for r in respostas_8)
                     },
                     {
                         "url": url_for('prova9', disciplina_id=discipline_id),
-                        "label": "Aula 24/06",
+                        "label": "Gestão de Conflitos e Resolução de Problemas",
                         "respondida": any(nome_bate(r) for r in respostas_9)
                     },
                     {
                         "url": url_for('prova10', disciplina_id=discipline_id),
-                        "label": "Aula 26/06",
+                        "label": "Gestão Estratégica de Pessoas no Franchising",
                         "respondida": any(nome_bate(r) for r in respostas_10)
                     },
                     {
                         "url": url_for('prova11', disciplina_id=discipline_id),
-                        "label": "Aula 01/07",
+                        "label": "Desenvolvimento da Cultura de Feedback",
                         "respondida": any(nome_bate(r) for r in respostas_11)
                     },
                     {
                         "url": url_for('prova12', disciplina_id=discipline_id),
-                        "label": "Aula 03/07",
+                        "label": "Gestão de Equipes de Vendas e Negociação",
                         "respondida": any(nome_bate(r) for r in respostas_12)
                     },
                 ]
@@ -1122,11 +1129,11 @@ def prova5(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_5', params={
+        resposta_existente = xano_request('GET', 'prova_profissional_futuro', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_5', params={
+        resposta_existente = xano_request('GET', 'prova_profissional_futuro', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1165,7 +1172,7 @@ def prova5(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_5', data=payload)
+                xano_request('POST', 'prova_profissional_futuro', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
@@ -1250,11 +1257,11 @@ def prova6(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_6', params={
+        resposta_existente = xano_request('GET', 'prova_metorneilider', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_6', params={
+        resposta_existente = xano_request('GET', 'prova_metorneilider', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1293,7 +1300,7 @@ def prova6(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_6', data=payload)
+                xano_request('POST', 'prova_metorneilider', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
@@ -1314,11 +1321,11 @@ def prova7(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_7', params={
+        resposta_existente = xano_request('GET', 'prova_inteligencia_emocional', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_7', params={
+        resposta_existente = xano_request('GET', 'prova_inteligencia_emocional', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1357,7 +1364,7 @@ def prova7(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_7', data=payload)
+                xano_request('POST', 'prova_inteligencia_emocional', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
@@ -1378,11 +1385,11 @@ def prova8(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_8', params={
+        resposta_existente = xano_request('GET', 'prova_comunicacao_assertiva', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_8', params={
+        resposta_existente = xano_request('GET', 'prova_comunicacao_assertiva', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1421,7 +1428,7 @@ def prova8(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_8', data=payload)
+                xano_request('POST', 'prova_comunicacao_assertiva', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
@@ -1442,11 +1449,11 @@ def prova9(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_9', params={
+        resposta_existente = xano_request('GET', 'prova_gestao_conflitos', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_9', params={
+        resposta_existente = xano_request('GET', 'prova_gestao_conflitos', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1485,7 +1492,7 @@ def prova9(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_9', data=payload)
+                xano_request('POST', 'prova_gestao_conflitos', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
@@ -1506,11 +1513,11 @@ def prova10(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_10', params={
+        resposta_existente = xano_request('GET', 'prova_gestao_estrategica', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_10', params={
+        resposta_existente = xano_request('GET', 'prova_gestao_estrategica', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1549,7 +1556,7 @@ def prova10(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_10', data=payload)
+                xano_request('POST', 'prova_gestao_estrategica', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
@@ -1570,11 +1577,11 @@ def prova11(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_11', params={
+        resposta_existente = xano_request('GET', 'prova_cultura_feedback', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_11', params={
+        resposta_existente = xano_request('GET', 'prova_cultura_feedback', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1613,7 +1620,7 @@ def prova11(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_11', data=payload)
+                xano_request('POST', 'prova_cultura_feedback', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
@@ -1634,11 +1641,11 @@ def prova12(disciplina_id):
 
     # ✅ Verificar se o aluno já respondeu usando apenas o aluno_nome
     try:
-        resposta_existente = xano_request('GET', 'respostas_prova_12', params={
+        resposta_existente = xano_request('GET', 'prova_gestao_equipe', params={
             'aluno_nome': aluno_nome
         })
         # após o GET
-        resposta_existente = xano_request('GET', 'respostas_prova_12', params={
+        resposta_existente = xano_request('GET', 'prova_gestao_equipe', params={
             'aluno_nome': aluno_nome
         })
 
@@ -1677,7 +1684,7 @@ def prova12(disciplina_id):
                     'created_at': datetime.now().isoformat()
                 }
 
-                xano_request('POST', 'respostas_prova_12', data=payload)
+                xano_request('POST', 'prova_gestao_equipe', data=payload)
                 flash("Prova enviada com sucesso!", "success")
                 return redirect(url_for('student_dashboard'))
 
